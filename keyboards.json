@@ -1,0 +1,16 @@
+{
+  "main_menu": [
+    ["today_tasks"],
+    ["settings", "editor"]
+  ],
+  "editor_menu": [
+    ["add_task", "edit_task"],
+    ["delete_task", "back"]
+  ],
+  "cancel_keyboard": [
+    ["cancel"]
+  ],
+  "cancel_back_keyboard": [
+    ["back", "cancel"]
+  ]
+}

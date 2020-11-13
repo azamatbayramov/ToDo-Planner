@@ -6,6 +6,8 @@ from data import db_session
 
 import json
 import datetime
+import keyboards
+import weekdays
 
 # Extracting settings and content from json
 SETTINGS = json.load(open("settings.json"))
@@ -19,18 +21,21 @@ Task = tasks.Task
 db_session.global_init("db/database.sqlite")
 
 
+def send_menu(update, menu_type):
+    update.message.reply_text(CONTENT["signboard"][menu_type]["ru"],
+                              reply_markup=keyboards.get_keyboard(menu_type, "ru"))
+
+
 def start(update, context):
     update.message.reply_text(CONTENT["message"]["welcome"]["ru"])
+
+    send_menu(update, "main_menu")
     return 'main_menu'
-
-
-def get_today_weekday():
-    return datetime.datetime.today().weekday() + 1
 
 
 def main_menu_handler(update, context):
     if update.message.text == CONTENT["button"]["today_tasks"]["ru"]:
-        today_weekday = get_today_weekday()
+        today_weekday = weekdays.today()
         session = db_session.create_session()
 
         today_tasks = session.query(Task).filter(Task.user_id == update.message.from_user.id,
@@ -50,17 +55,15 @@ def main_menu_handler(update, context):
         return "main_menu"
 
     elif update.message.text == CONTENT["button"]["editor"]["ru"]:
-        update.message.reply_text(CONTENT["signboard"]["editor_menu"]["ru"])
+        update.message.reply_text(CONTENT["signboard"]["editor_menu"]["ru"],
+                                  reply_markup=keyboards.get_keyboard("editor_menu", "ru"))
         return "editor"
 
 
 def editor_menu_handler(update, context):
-    print(update.message.text)
-    print(CONTENT["button"]["back"]["ru"])
-    print(update.message.text == CONTENT["button"]["back"]["ru"])
-
     if update.message.text == CONTENT["button"]["add_task"]["ru"]:
-        update.message.reply_text(CONTENT["message"]["write_task_title"]["ru"])
+        update.message.reply_text(CONTENT["message"]["write_task_title"]["ru"],
+                                  reply_markup=keyboards.get_keyboard("cancel_keyboard", "ru"))
         return "add_task"
 
     elif update.message.text == CONTENT["button"]["edit_task"]["ru"]:
@@ -72,21 +75,38 @@ def editor_menu_handler(update, context):
         return "editor_menu"
 
     elif update.message.text == CONTENT["button"]["back"]["ru"]:
-        update.message.reply_text(CONTENT["signboard"]["main_menu"]["ru"])
+        send_menu(update, "main_menu")
         return ConversationHandler.END
 
 
 def add_task_handler_title(update, context):
+    if update.message.text == CONTENT["button"]["cancel"]["ru"]:
+        send_menu(update, "editor_menu")
+        return ConversationHandler.END
     context.user_data["new_task"] = {}
     context.user_data["new_task"]["title"] = update.message.text
-    update.message.reply_text(CONTENT["message"]["write_task_weekdays"]["ru"])
+
+    update.message.reply_text(CONTENT["message"]["write_task_weekdays"]["ru"],
+                              reply_markup=keyboards.get_keyboard("cancel_back_keyboard", "ru"))
+
     return "weekdays"
 
 
 def add_task_handler_weekdays(update, context):
-    weekdays = update.message.text.split()
-    weekdays.sort()
-    context.user_data["new_task"]["weekdays"] = ''.join(weekdays)
+    if update.message.text == CONTENT["button"]["cancel"]["ru"]:
+        send_menu(update, "editor_menu")
+        return ConversationHandler.END
+    if update.message.text == CONTENT["button"]["back"]["ru"]:
+        update.message.reply_text(CONTENT["message"]["write_task_title"]["ru"],
+                                  reply_markup=keyboards.get_keyboard("cancel_keyboard", "ru"))
+        return "title"
+
+    weekdays_str = weekdays.get_weekdays_from_str(update.message.text, "ru")
+
+    if not weekdays_str:
+        update.message.reply_text(CONTENT["message"]["invalid_input"]["ru"])
+        return "weekdays"
+    context.user_data["new_task"]["weekdays"] = ''.join(weekdays_str)
 
     new_task = Task()
     new_task.user_id = update.message.from_user.id
@@ -101,6 +121,7 @@ def add_task_handler_weekdays(update, context):
     context.user_data["new_task"] = {}
 
     update.message.reply_text(CONTENT["message"]["task_added"]["ru"])
+    send_menu(update, "editor_menu")
 
     return ConversationHandler.END
 
