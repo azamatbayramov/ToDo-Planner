@@ -1,27 +1,39 @@
 {
   "button": {
     "add_task": {
+      "emoji": ":heavy_plus_sign:",
       "ru": "Добавить задачу"
     },
     "edit_task": {
+      "emoji": ":pencil:",
       "ru": "Редактировать задачу"
     },
     "delete_task": {
+      "emoji": ":wastebasket:",
       "ru": "Удалить задачу"
     },
     "today_tasks": {
+      "emoji": ":page_facing_up:",
       "ru": "Задачи дня"
     },
     "editor": {
+      "emoji": ":memo:",
       "ru": "Редактор"
     },
     "settings": {
+      "emoji": ":gear:",
       "ru": "Настройки"
     },
+    "next": {
+      "emoji": ":right_arrow:",
+      "ru": "Дальше"
+    },
     "back": {
+      "emoji": ":left_arrow:",
       "ru": "Назад"
     },
     "cancel": {
+      "emoji": ":cross_mark:",
       "ru": "Отмена"
     }
   },
@@ -53,6 +65,9 @@
     },
     "write_task_weekdays": {
       "ru": "Введите дни недели для этой задачи через пробел\nДопустимые форматы:\n1)Полные названия дней недели:\nПонедельник вторник среда и тд.\n2)Краткие названия дней недели:\nПн вт ср чт пт сб вс\n3)Номера дней недели(1 - пн, 7 - вс)\n1 2 3 4 5 6 7"
+    },
+    "click_buttons": {
+      "ru": "Нажимай по кнопочкам, а то я не понимаю"
     }
   },
   "signboard": {

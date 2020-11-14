@@ -1,21 +1,21 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram.ext import CallbackContext, CommandHandler, ConversationHandler
 
-from data.__all_models import users, tasks
+
+from data.models import Task
 from data import db_session
 
 import json
 import datetime
+import emoji
+
 import keyboards
 import weekdays
+import tasks
 
 # Extracting settings and content from json
 SETTINGS = json.load(open("settings.json"))
 CONTENT = json.load(open('content.json', encoding="utf8"))
-
-# Extracting classes
-User = users.User
-Task = tasks.Task
 
 # Database initialization
 db_session.global_init("db/database.sqlite")
@@ -23,7 +23,7 @@ db_session.global_init("db/database.sqlite")
 
 def send_menu(update, menu_type):
     update.message.reply_text(CONTENT["signboard"][menu_type]["ru"],
-                              reply_markup=keyboards.get_keyboard(menu_type, "ru"))
+                              reply_markup=keyboards.get_menu_keyboard(menu_type, "ru"))
 
 
 def start(update, context):
@@ -34,7 +34,9 @@ def start(update, context):
 
 
 def main_menu_handler(update, context):
-    if update.message.text == CONTENT["button"]["today_tasks"]["ru"]:
+    pushed_button = keyboards.check_button(update, "main_menu", "ru")
+
+    if pushed_button == "today_tasks":
         today_weekday = weekdays.today()
         session = db_session.create_session()
 
@@ -54,51 +56,60 @@ def main_menu_handler(update, context):
 
         return "main_menu"
 
-    elif update.message.text == CONTENT["button"]["editor"]["ru"]:
+    elif pushed_button == "editor":
         update.message.reply_text(CONTENT["signboard"]["editor_menu"]["ru"],
-                                  reply_markup=keyboards.get_keyboard("editor_menu", "ru"))
+                                  reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru"))
         return "editor"
 
 
 def editor_menu_handler(update, context):
-    if update.message.text == CONTENT["button"]["add_task"]["ru"]:
+    pushed_button = keyboards.check_button(update, "editor_menu", "ru")
+
+    if pushed_button == "add_task":
         update.message.reply_text(CONTENT["message"]["write_task_title"]["ru"],
-                                  reply_markup=keyboards.get_keyboard("cancel_keyboard", "ru"))
+                                  reply_markup=keyboards.get_menu_keyboard("cancel", "ru"))
         return "add_task"
 
-    elif update.message.text == CONTENT["button"]["edit_task"]["ru"]:
-        # TODO: add function to edit tasks
+    elif pushed_button == "edit_task":
         return "editor_menu"
 
-    elif update.message.text == CONTENT["button"]["delete_task"]["ru"]:
+    elif pushed_button == "delete_task":
         # TODO: add function to delete tasks
         return "editor_menu"
 
-    elif update.message.text == CONTENT["button"]["back"]["ru"]:
+    elif pushed_button == "back":
         send_menu(update, "main_menu")
         return ConversationHandler.END
 
+    else:
+        update.message.reply_text(CONTENT["message"]["click_buttons"]["ru"])
+        return "editor_menu"
+
 
 def add_task_handler_title(update, context):
-    if update.message.text == CONTENT["button"]["cancel"]["ru"]:
+    if keyboards.check_button(update, "cancel", "ru") == "cancel":
         send_menu(update, "editor_menu")
         return ConversationHandler.END
+
     context.user_data["new_task"] = {}
     context.user_data["new_task"]["title"] = update.message.text
 
     update.message.reply_text(CONTENT["message"]["write_task_weekdays"]["ru"],
-                              reply_markup=keyboards.get_keyboard("cancel_back_keyboard", "ru"))
+                              reply_markup=keyboards.get_menu_keyboard("cancel_back", "ru"))
 
     return "weekdays"
 
 
 def add_task_handler_weekdays(update, context):
-    if update.message.text == CONTENT["button"]["cancel"]["ru"]:
+    pushed_button = keyboards.check_button(update, "cancel_back", "ru")
+
+    if pushed_button == "cancel":
         send_menu(update, "editor_menu")
         return ConversationHandler.END
-    if update.message.text == CONTENT["button"]["back"]["ru"]:
+
+    if pushed_button == "back":
         update.message.reply_text(CONTENT["message"]["write_task_title"]["ru"],
-                                  reply_markup=keyboards.get_keyboard("cancel_keyboard", "ru"))
+                                  reply_markup=keyboards.get_menu_keyboard("cancel", "ru"))
         return "title"
 
     weekdays_str = weekdays.get_weekdays_from_str(update.message.text, "ru")
@@ -106,17 +117,12 @@ def add_task_handler_weekdays(update, context):
     if not weekdays_str:
         update.message.reply_text(CONTENT["message"]["invalid_input"]["ru"])
         return "weekdays"
+
     context.user_data["new_task"]["weekdays"] = ''.join(weekdays_str)
 
-    new_task = Task()
-    new_task.user_id = update.message.from_user.id
-    new_task.title = context.user_data["new_task"]["title"]
-    new_task.weekdays = context.user_data["new_task"]["weekdays"]
-
-    session = db_session.create_session()
-    session.add(new_task)
-    session.commit()
-    session.close()
+    tasks.add_task(update.message.from_user.id,
+                   context.user_data["new_task"]["title"],
+                   context.user_data["new_task"]["weekdays"])
 
     context.user_data["new_task"] = {}
 
@@ -135,6 +141,7 @@ add_task_conv = ConversationHandler(
     },
 
     fallbacks=[],
+
     map_to_parent={
         ConversationHandler.END: "editor_menu"
     }

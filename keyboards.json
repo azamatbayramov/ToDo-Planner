@@ -1,16 +1,69 @@
 {
-  "main_menu": [
+  "static": {
+    "main_menu": [
     ["today_tasks"],
     ["settings", "editor"]
-  ],
-  "editor_menu": [
-    ["add_task", "edit_task"],
-    ["delete_task", "back"]
-  ],
-  "cancel_keyboard": [
-    ["cancel"]
-  ],
-  "cancel_back_keyboard": [
-    ["back", "cancel"]
-  ]
+    ],
+    "editor_menu": [
+      ["add_task", "edit_task"],
+      ["delete_task", "back"]
+    ],
+    "cancel": [
+      ["cancel"]
+    ],
+    "cancel_back": [
+      ["back", "cancel"]
+    ]
+  },
+  "dynamic": {
+    "tasks_keyboard": {
+      "count_1": [
+        ["{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_2": [
+        ["{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_3": [
+        ["{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_4": [
+        ["{task}", "{task}"],
+        ["{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_5": [
+        ["{task}", "{task}"],
+        ["{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_6": [
+        ["{task}", "{task}", "{task}"],
+        ["{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_7": [
+        ["{task}", "{task}", "{task}"],
+        ["{task}", "{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_8": [
+        ["{task}", "{task}", "{task}", "{task}"],
+        ["{task}", "{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_9": [
+        ["{task}", "{task}", "{task}", "{task}"],
+        ["{task}", "{task}", "{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ],
+      "count_10": [
+        ["{task}", "{task}", "{task}", "{task}", "{task}"],
+        ["{task}", "{task}", "{task}", "{task}", "{task}"],
+        ["cancel", "back", "next"]
+      ]
+    }
+  }
 }

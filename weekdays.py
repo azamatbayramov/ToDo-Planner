@@ -12,10 +12,12 @@ def get_weekdays_from_str(input_str, language):
         weekdays = input_str.split()
         weekdays.sort()
         output_str = ''.join(weekdays)
+
     elif all(map(lambda s: s in CONTENT["bot"]["weekdays"][language], input_str.split())):
         weekdays = input_str.split()
         for weekday in weekdays:
             output_str += str(CONTENT["bot"]["weekdays"][language].index(weekday))
+
     elif all(map(lambda s: s in CONTENT["bot"]["short_weekdays"][language], input_str.split())):
         weekdays = input_str.split()
         for weekday in weekdays:
