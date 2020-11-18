@@ -13,6 +13,9 @@
     ],
     "cancel_back": [
       ["back", "cancel"]
+    ],
+    "cancel_back_next": [
+      ["back", "cancel", "next"]
     ]
   },
   "dynamic": {

@@ -2,16 +2,12 @@ from data.models import Task
 from data import db_session
 
 
-def get_user_tasks(user_id, generator=False):
+def get_user_tasks(user_id):
     session = db_session.create_session()
     tasks_list = session.query(Task).filter(Task.user_id == user_id).all()
     session.close()
 
-    if generator:
-        for task in tasks_list:
-            yield task
-    else:
-        return tasks_list
+    return tasks_list
 
 
 def add_task(user_id, title, weekdays):

@@ -1,7 +1,6 @@
 import datetime
 import json
-
-CONTENT = json.load(open('content.json', encoding="utf8"))
+from all_json import SETTINGS, CONTENT, KEYBOARDS
 
 
 def get_weekdays_from_str(input_str, language):
