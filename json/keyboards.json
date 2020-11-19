@@ -16,6 +16,9 @@
     ],
     "cancel_back_next": [
       ["back", "cancel", "next"]
+    ],
+    "edit_task_menu": [
+      ["back", "title", "weekdays"]
     ]
   },
   "dynamic": {

@@ -8,15 +8,12 @@ import tasks
 
 
 def get_tasks_keyboard(user_id, language, page=0):
-    tasks_list = tasks.get_user_tasks(user_id)
-    tasks_count = len(tasks_list)
+    tasks_titles_list = tasks.get_user_tasks(user_id, only_titles=True)
+    tasks_count = len(tasks_titles_list)
     pages_count = math.ceil(tasks_count / SETTINGS["keyboard_tasks_count"])
     last_page = pages_count - 1
-
-    tasks_titles_list = [task.title for task in tasks_list]
-
-    tasks_titles_list.sort()
-
+    if page >= pages_count:
+        return False
     if tasks_count > SETTINGS["keyboard_tasks_count"]:
         start_index = SETTINGS["keyboard_tasks_count"] * page
         finish_index = SETTINGS["keyboard_tasks_count"] * (page + 1)
@@ -47,11 +44,10 @@ def get_tasks_keyboard(user_id, language, page=0):
                     continue
                 if button == "next" and (pages_count == 1 or page == last_page):
                     continue
-                print(button)
                 keyboard_list[-1].append(emojize(CONTENT["button"][button]["emoji"])
                                          + CONTENT["button"][button][language])
 
-    return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False)
+    return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
 
 
 def get_menu_keyboard(keyboard, language):

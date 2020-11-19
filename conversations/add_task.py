@@ -19,6 +19,12 @@ def title_handler(update, context):
     if keyboards.check_button(update, KEYBOARDS["static"]["cancel"], "ru") == "cancel":
         return exit_from_conversation(update)
 
+    task_titles_list = tasks.get_user_tasks(update.message.from_user.id, only_titles=True)
+
+    if update.message.text in task_titles_list:
+        update.message.reply_text(CONTENT["message"]["task_exist"]["ru"])
+        return "title_handler"
+
     context.user_data["new_task"] = {}
     context.user_data["new_task"]["title"] = update.message.text
 

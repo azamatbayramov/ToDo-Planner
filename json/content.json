@@ -35,6 +35,14 @@
     "cancel": {
       "emoji": ":cross_mark:",
       "ru": "Отмена"
+    },
+    "title": {
+      "emoji": ":pencil:",
+      "ru": "Название"
+    },
+    "weekdays": {
+      "emoji": ":calendar:",
+      "ru": "Дни недели"
     }
   },
   "message": {
@@ -57,6 +65,12 @@
     "task_added": {
       "ru": "Задача создана"
     },
+    "task_title_edited": {
+      "ru": "Название задачи изменено"
+    },
+    "task_weekdays_edited": {
+      "ru": "Дни недели задачи изменены"
+    },
     "weekdays": {
       "ru": "Дни недели:"
     },
@@ -71,6 +85,12 @@
     },
     "choice_task": {
       "ru": "Выберите свою задачу"
+    },
+    "task_exist": {
+      "ru": "Задача существует"
+    },
+    "choice_action": {
+      "ru": "Выберите действие"
     }
   },
   "signboard": {
