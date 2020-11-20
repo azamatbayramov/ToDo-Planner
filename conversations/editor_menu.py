@@ -1,8 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram.ext import CallbackContext, CommandHandler, ConversationHandler
 from all_json import SETTINGS, CONTENT, KEYBOARDS
-from conversations.conversations_list import add_task_conversation, edit_task_conversation, \
-    delete_task_conversation
+from conversations.conversations_list import add_task_conversation, edit_delete_task_conversation
 import json
 
 import keyboards
@@ -26,14 +25,14 @@ def handler(update, context):
         return "add_task"
 
     elif pushed_button == "edit_task":
-        update.message.reply_text(CONTENT["message"]["choice_task"]["ru"],
-                                  reply_markup=keyboards.get_tasks_keyboard
-                                  (update.message.from_user.id, "ru"))
-        return "edit_task"
-
-    elif pushed_button == "delete_task":
-        # TODO: add function to delete tasks
-        return "editor_menu"
+        if tasks.get_user_tasks(update.message.from_user.id):
+            update.message.reply_text(CONTENT["message"]["choice_task"]["ru"],
+                                      reply_markup=keyboards.get_tasks_keyboard
+                                      (update.message.from_user.id, "ru"))
+            return "edit_task"
+        else:
+            update.message.reply_text(CONTENT["message"]["not_tasks"]["ru"])
+            return "editor_menu"
 
     elif pushed_button == "back":
         return exit_from_conversation(update)
@@ -49,8 +48,7 @@ editor_menu_conversation = ConversationHandler(
     states={
         "editor_menu": [MessageHandler(Filters.text, handler)],
         "add_task": [add_task_conversation],
-        "edit_task": [edit_task_conversation],
-        "delete_task": [delete_task_conversation]
+        "edit_task": [edit_delete_task_conversation],
     },
 
     fallbacks=[],

@@ -2,11 +2,11 @@
   "button": {
     "add_task": {
       "emoji": ":heavy_plus_sign:",
-      "ru": "Добавить задачу"
+      "ru": "Добавить"
     },
     "edit_task": {
       "emoji": ":pencil:",
-      "ru": "Редактировать задачу"
+      "ru": "Редактировать/удалить"
     },
     "delete_task": {
       "emoji": ":wastebasket:",
@@ -18,7 +18,7 @@
     },
     "editor": {
       "emoji": ":memo:",
-      "ru": "Редактор"
+      "ru": "Редактор задач"
     },
     "settings": {
       "emoji": ":gear:",
@@ -43,6 +43,10 @@
     "weekdays": {
       "emoji": ":calendar:",
       "ru": "Дни недели"
+    },
+    "delete": {
+      "emoji": ":wastebasket:",
+      "ru": "Удалить"
     }
   },
   "message": {
@@ -55,6 +59,9 @@
     },
     "not_tasks_today": {
       "ru": "У вас нет задач на сегодня, но вы можете легко это исправить(ну или не исправлять, отдых тоже важен)"
+    },
+    "not_tasks": {
+      "ru": "У вас нет задач"
     },
     "invalid_input": {
       "ru": "Некорректный ввод. Попробуйте заново"
@@ -70,6 +77,9 @@
     },
     "task_weekdays_edited": {
       "ru": "Дни недели задачи изменены"
+    },
+    "task_deleted": {
+      "ru": "Задача удалена"
     },
     "weekdays": {
       "ru": "Дни недели:"

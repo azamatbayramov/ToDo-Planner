@@ -6,7 +6,7 @@
     ],
     "editor_menu": [
       ["add_task", "edit_task"],
-      ["delete_task", "back"]
+      ["back"]
     ],
     "cancel": [
       ["cancel"]
@@ -18,7 +18,8 @@
       ["back", "cancel", "next"]
     ],
     "edit_task_menu": [
-      ["back", "title", "weekdays"]
+      ["title", "weekdays"],
+      ["back", "delete"]
     ]
   },
   "dynamic": {

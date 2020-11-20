@@ -143,12 +143,31 @@ def edit_mode_handler(update, context):
 
         return "new_weekdays_handler"
 
+    elif pushed_button == "delete":
+        session = db_session.create_session()
+        task = session.query(Task).filter(Task.id == context.user_data["selected_task_id"]).first()
+        session.delete(task)
+        session.commit()
+        session.close()
+
+        update.message.reply_text(CONTENT["message"]["task_deleted"]["ru"])
+
+        if tasks.get_user_tasks(update.message.from_user.id):
+            update.message.reply_text(CONTENT["message"]["choice_task"]["ru"],
+                                      reply_markup=keyboards.get_tasks_keyboard
+                                      (update.message.from_user.id, "ru"))
+            return "choice_task_handler"
+        else:
+            update.message.reply_text(CONTENT["signboard"]["editor_menu"]["ru"],
+                                      reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru"))
+            return ConversationHandler.END
+
     else:
         update.message.reply_text(CONTENT["message"]["click_buttons"]["ru"])
         return "edit_mode_handler"
 
 
-edit_task_conversation = ConversationHandler(
+edit_delete_task_conversation = ConversationHandler(
     entry_points=[MessageHandler(Filters.text, choice_task_handler, pass_user_data=True)],
 
     states={

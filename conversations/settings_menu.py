@@ -1,8 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram.ext import CallbackContext, CommandHandler, ConversationHandler
 from all_json import SETTINGS, CONTENT, KEYBOARDS
-from conversations.conversations_list import add_task_conversation, edit_task_conversation, \
-    delete_task_conversation
+from conversations.conversations_list import add_task_conversation, edit_delete_task_conversation
 import json
 
 import keyboards
