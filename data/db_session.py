@@ -3,6 +3,8 @@ import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session
 import sqlalchemy.ext.declarative as dec
 
+# This is a module for working with SQLAlchemy - database initialization and session creation
+
 SqlAlchemyBase = dec.declarative_base()
 
 __factory = None

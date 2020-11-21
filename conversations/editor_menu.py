@@ -1,14 +1,13 @@
-from telegram.ext import Updater, MessageHandler, Filters
-from telegram.ext import CallbackContext, CommandHandler, ConversationHandler
-from all_json import SETTINGS, CONTENT, KEYBOARDS
-from conversations.conversations_list import add_task_conversation, edit_delete_task_conversation
-import json
+from telegram.ext import MessageHandler, ConversationHandler, Filters
+
+from all_json import CONTENT, KEYBOARDS, MESSAGES
+from all_conversations import add_task_conversation, edit_delete_task_conversation
 
 import keyboards
-import weekdays
 import tasks
 
 
+# Function for exiting from conversation
 def exit_from_conversation(update):
     update.message.reply_text(CONTENT["signboard"]["main_menu"]["ru"],
                               reply_markup=keyboards.get_menu_keyboard("main_menu", "ru"))
@@ -16,32 +15,34 @@ def exit_from_conversation(update):
     return ConversationHandler.END
 
 
+# Function - handler for editor button. Buttons: add task, edit task, back.
 def handler(update, context):
     pushed_button = keyboards.check_button(update, KEYBOARDS["static"]["editor_menu"], "ru")
 
     if pushed_button == "add_task":
-        update.message.reply_text(CONTENT["message"]["write_task_title"]["ru"],
+        update.message.reply_text(MESSAGES["write_task_title"]["ru"],
                                   reply_markup=keyboards.get_menu_keyboard("cancel", "ru"))
         return "add_task"
 
     elif pushed_button == "edit_task":
         if tasks.get_user_tasks(update.message.from_user.id):
-            update.message.reply_text(CONTENT["message"]["choice_task"]["ru"],
+            update.message.reply_text(MESSAGES["choice_task"]["ru"],
                                       reply_markup=keyboards.get_tasks_keyboard
                                       (update.message.from_user.id, "ru"))
             return "edit_task"
         else:
-            update.message.reply_text(CONTENT["message"]["not_tasks"]["ru"])
+            update.message.reply_text(MESSAGES["not_tasks"]["ru"])
             return "editor_menu"
 
     elif pushed_button == "back":
         return exit_from_conversation(update)
 
     else:
-        update.message.reply_text(CONTENT["message"]["click_buttons"]["ru"])
+        update.message.reply_text(MESSAGES["click_buttons"]["ru"])
         return "editor_menu"
 
 
+# Conversation schema
 editor_menu_conversation = ConversationHandler(
     entry_points=[MessageHandler(Filters.text, handler)],
 

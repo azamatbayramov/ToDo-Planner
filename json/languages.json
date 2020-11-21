@@ -1,0 +1,14 @@
+[
+  {
+    "id": 0,
+    "short": "ru",
+    "title": "Русский",
+    "emoji": ":ru:"
+  },
+  {
+    "id": 1,
+    "short": "eng",
+    "title": "English",
+    "emoji": ":uk:"
+  }
+]

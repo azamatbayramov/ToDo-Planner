@@ -26,7 +26,7 @@ def add_task(user_id, title, weekdays):
     new_task = Task()
     new_task.user_id = user_id
     new_task.title = title
-    new_task.weekdays = weekdays
+    new_task.days_of_the_week = weekdays
 
     session = db_session.create_session()
     session.add(new_task)

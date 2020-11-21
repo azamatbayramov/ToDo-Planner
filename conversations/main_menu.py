@@ -1,40 +1,39 @@
-from telegram.ext import Updater, MessageHandler, Filters
-from telegram.ext import CallbackContext, CommandHandler, ConversationHandler
+from telegram.ext import CommandHandler, MessageHandler, ConversationHandler, Filters
 from data.models import Task
 from data import db_session
-from all_json import SETTINGS, CONTENT, KEYBOARDS
-from conversations.conversations_list import editor_menu_conversation, settings_menu_conversation
-import json
+from all_json import CONTENT, KEYBOARDS, MESSAGES
+from all_conversations import editor_menu_conversation, settings_menu_conversation
 
 import keyboards
-import weekdays
-import tasks
+import days_of_the_week
 
 
 def start(update, context):
-    update.message.reply_text(CONTENT["message"]["welcome"]["ru"])
+    update.message.reply_text(MESSAGES["welcome"]["ru"])
     update.message.reply_text(CONTENT["signboard"]["main_menu"]["ru"],
                               reply_markup=keyboards.get_menu_keyboard("main_menu", "ru"))
 
     return 'main_menu'
 
 
+# Function - handler for main menu buttons. Buttons: today's tasks, editor, settings(in future :D)
 def handler(update, context):
     pushed_button = keyboards.check_button(update, KEYBOARDS["static"]["main_menu"], "ru")
 
     if pushed_button == "today_tasks":
-        today_weekday = weekdays.today()
+        today_days_of_the_week = days_of_the_week.today_day_of_the_week()
         session = db_session.create_session()
 
         today_tasks = session.query(Task).filter(Task.user_id == update.message.from_user.id,
-                                                 Task.weekdays.like(f"%{today_weekday}%")).all()
+                                                 Task.days_of_the_week.like(
+                                                     f"%{today_days_of_the_week}%")).all()
 
         if today_tasks:
-            text = CONTENT["message"]["today_tasks"]["ru"] + '\n\n'
+            text = MESSAGES["today_tasks"]["ru"] + '\n\n'
             for task in today_tasks:
                 text += task.title + "\n"
         else:
-            text = CONTENT["message"]["not_tasks_today"]["ru"]
+            text = MESSAGES["not_tasks_today"]["ru"]
 
         update.message.reply_text(text)
 
@@ -48,6 +47,7 @@ def handler(update, context):
         return "editor"
 
 
+# Conversation schema
 main_menu_conversation = ConversationHandler(
     entry_points=[CommandHandler("start", start)],
 

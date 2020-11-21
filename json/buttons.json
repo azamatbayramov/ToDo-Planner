@@ -1,0 +1,50 @@
+{
+  "add_task": {
+    "emoji": ":heavy_plus_sign:",
+    "ru": "Добавить"
+  },
+  "edit_task": {
+    "emoji": ":pencil:",
+    "ru": "Редактировать/удалить"
+  },
+  "delete_task": {
+    "emoji": ":wastebasket:",
+    "ru": "Удалить задачу"
+  },
+  "today_tasks": {
+    "emoji": ":page_facing_up:",
+    "ru": "Задачи дня"
+  },
+  "editor": {
+    "emoji": ":memo:",
+    "ru": "Редактор задач"
+  },
+  "settings": {
+    "emoji": ":gear:",
+    "ru": "Настройки"
+  },
+  "next": {
+    "emoji": ":right_arrow:",
+    "ru": "Дальше"
+  },
+  "back": {
+    "emoji": ":left_arrow:",
+    "ru": "Назад"
+  },
+  "cancel": {
+    "emoji": ":cross_mark:",
+    "ru": "Отмена"
+  },
+  "title": {
+    "emoji": ":pencil:",
+    "ru": "Название"
+  },
+  "days_of_the_week": {
+    "emoji": ":calendar:",
+    "ru": "Дни недели"
+  },
+  "delete": {
+    "emoji": ":wastebasket:",
+    "ru": "Удалить"
+  }
+}

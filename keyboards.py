@@ -1,9 +1,7 @@
-from data import db_session
 from telegram import ReplyKeyboardMarkup
-import json
 from emoji import emojize
 import math
-from all_json import SETTINGS, CONTENT, KEYBOARDS
+from all_json import SETTINGS, KEYBOARDS, BUTTONS
 import tasks
 
 
@@ -44,8 +42,8 @@ def get_tasks_keyboard(user_id, language, page=0):
                     continue
                 if button == "next" and (pages_count == 1 or page == last_page):
                     continue
-                keyboard_list[-1].append(emojize(CONTENT["button"][button]["emoji"])
-                                         + CONTENT["button"][button][language])
+                keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"])
+                                         + BUTTONS[button][language])
 
     return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
 
@@ -57,8 +55,8 @@ def get_menu_keyboard(keyboard, language):
     for row in keyboard_scheme:
         keyboard_list.append([])
         for button in row:
-            keyboard_list[-1].append(emojize(CONTENT["button"][button]["emoji"])
-                                     + CONTENT["button"][button][language])
+            keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"])
+                                     + BUTTONS[button][language])
 
     return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
 
@@ -66,10 +64,10 @@ def get_menu_keyboard(keyboard, language):
 def check_button(update, keyboard_list, language):
     for row in keyboard_list:
         for button in row:
-            if update.message.text == CONTENT["button"][button][language]:
+            if update.message.text == BUTTONS[button][language]:
                 return button
 
-            elif update.message.text[1:] == CONTENT["button"][button][language]:
+            elif update.message.text[1:] == BUTTONS[button][language]:
                 return button
 
     return False

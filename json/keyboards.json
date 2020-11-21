@@ -18,7 +18,7 @@
       ["back", "cancel", "next"]
     ],
     "edit_task_menu": [
-      ["title", "weekdays"],
+      ["title", "days_of_the_week"],
       ["back", "delete"]
     ]
   },
