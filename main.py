@@ -4,6 +4,7 @@ from all_json import SETTINGS
 from all_conversations import main_menu_conversation
 
 # Database initialization
+db_session.create_folder_for_database("db")
 db_session.global_init("db/database.sqlite")
 
 
