@@ -3,64 +3,85 @@ from all_json import SETTINGS, CONTENT, KEYBOARDS, MESSAGES
 import keyboards
 import days_of_the_week
 import tasks
+import languages
 
 
 # Function for exiting from conversation
 def exit_from_conversation(update):
-    update.message.reply_text(CONTENT["signboard"]["editor_menu"]["ru"],
-                              reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru"))
+    user_id = update.message.from_user.id
+    language = languages.get_user_language(user_id)
+
+    update.message.reply_text(
+        CONTENT["signboard"]["editor_menu"][language["short"]],
+        reply_markup=keyboards.get_menu_keyboard("editor_menu", language["short"])
+    )
 
     return ConversationHandler.END
 
 
 # Function - handler for title for a new task
 def title_handler(update, context):
-    if keyboards.check_button(update, KEYBOARDS["static"]["cancel"], "ru") == "cancel":
+    user_id = update.message.from_user.id
+    language = languages.get_user_language(user_id)
+
+    pushed_button = keyboards.check_button(update, KEYBOARDS["static"]["cancel"], language["short"])
+
+    if pushed_button == "cancel":
         return exit_from_conversation(update)
 
-    task_titles_list = tasks.get_user_tasks(update.message.from_user.id, only_titles=True)
+    task_titles_list = tasks.get_user_tasks(user_id, only_titles=True)
 
     if update.message.text in task_titles_list:
-        update.message.reply_text(MESSAGES["task_exist"]["ru"])
+        update.message.reply_text(MESSAGES["task_exist"][language["short"]])
         return "title_handler"
 
     context.user_data["new_task"] = {}
     context.user_data["new_task"]["title"] = update.message.text
 
-    update.message.reply_text(MESSAGES["write_task_days_of_the_week"]["ru"],
-                              reply_markup=keyboards.get_menu_keyboard("cancel_back", "ru"))
+    update.message.reply_text(
+        MESSAGES["write_task_days_of_the_week"][language["short"]],
+        reply_markup=keyboards.get_menu_keyboard("cancel_back", language["short"])
+    )
 
     return "days_of_the_week_handler"
 
 
 # Function - handler for days of the week for a new task
 def days_of_the_week_handler(update, context):
-    pushed_button = keyboards.check_button(update, KEYBOARDS["static"]["cancel_back"], "ru")
+    user_id = update.message.from_user.id
+    language = languages.get_user_language(user_id)
+
+    pushed_button = keyboards.check_button(update,
+                                           KEYBOARDS["static"]["cancel_back"],
+                                           language["short"])
 
     if pushed_button == "cancel":
         return exit_from_conversation(update)
 
     if pushed_button == "back":
-        update.message.reply_text(MESSAGES["write_task_title"]["ru"],
-                                  reply_markup=keyboards.get_menu_keyboard("cancel", "ru"))
+        update.message.reply_text(
+            MESSAGES["write_task_title"][language["short"]],
+            reply_markup=keyboards.get_menu_keyboard("cancel", language["short"])
+        )
+
         return "title_handler"
 
     days_of_the_week_str = days_of_the_week.get_days_of_the_week_from_string(update.message.text,
-                                                                             "ru")
+                                                                             language["short"])
 
     if not days_of_the_week_str:
-        update.message.reply_text(MESSAGES["invalid_input"]["ru"])
+        update.message.reply_text(MESSAGES["invalid_input"][language["short"]])
         return "days_of_the_week_handler"
 
     context.user_data["new_task"]["days_of_the_week"] = "".join(days_of_the_week_str)
 
-    tasks.add_task(update.message.from_user.id,
+    tasks.add_task(user_id,
                    context.user_data["new_task"]["title"],
                    context.user_data["new_task"]["days_of_the_week"])
 
     context.user_data["new_task"] = {}
 
-    update.message.reply_text(MESSAGES["task_added"]["ru"])
+    update.message.reply_text(MESSAGES["task_added"][language["short"]])
 
     return exit_from_conversation(update)
 

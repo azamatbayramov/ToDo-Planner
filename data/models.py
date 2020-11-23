@@ -17,5 +17,5 @@ class Task(SqlAlchemyBase):
 class User(SqlAlchemyBase):
     __tablename__ = 'users'
 
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    language = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    telegram_id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    language_id = sqlalchemy.Column(sqlalchemy.Integer)
