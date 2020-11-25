@@ -3,7 +3,6 @@ from data.models import Task
 from data import db_session
 from all_json import CONTENT, KEYBOARDS, MESSAGES
 from all_conversations import editor_menu_conversation, settings_menu_conversation
-
 import keyboards
 import days_of_the_week
 
@@ -46,6 +45,10 @@ def handler(update, context):
                                   reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru"))
         return "editor"
 
+    elif pushed_button == "settings":
+        update.message.reply_text(CONTENT["signboard"]["settings_menu"]["ru"],
+                                  reply_markup=keyboards.get_menu_keyboard("settings_menu", "ru"))
+        return "settings"
 
 # Conversation schema
 main_menu_conversation = ConversationHandler(

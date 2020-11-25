@@ -52,5 +52,11 @@
   },
   "choice_action": {
     "ru": "Выберите действие"
+  },
+  "choice_language": {
+    "ru": "Выберите язык"
+  },
+  "language_changed": {
+    "ru": "Язык изменен"
   }
 }

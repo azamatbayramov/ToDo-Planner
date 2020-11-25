@@ -75,8 +75,6 @@ def choice_task_handler(update, context):
 def new_title_handler(update, context):
     pushed_button = keyboards.check_button(update, KEYBOARDS["static"]["cancel"], "ru")
 
-    print(pushed_button)
-
     if pushed_button == "cancel":
         send_edit_mode_menu(update)
 

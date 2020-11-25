@@ -3,6 +3,7 @@ from emoji import emojize
 import math
 from all_json import SETTINGS, KEYBOARDS, BUTTONS
 import tasks
+from all_json import LANGUAGES
 
 
 def get_tasks_keyboard(user_id, language, page=0):
@@ -57,6 +58,21 @@ def get_menu_keyboard(keyboard, language):
         for button in row:
             keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"])
                                      + BUTTONS[button][language])
+
+    return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
+
+
+def get_languages_menu(user_language):
+    languages_list = LANGUAGES
+    keyboard_list = [[]]
+
+    for language in languages_list:
+        if len(keyboard_list[-1]) > 3:
+            keyboard_list.append([])
+
+        keyboard_list[-1].append(emojize(language["emoji"]) + language["title"])
+
+    keyboard_list.append([emojize(BUTTONS['back']["emoji"]) + BUTTONS['back'][user_language]])
 
     return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
 

@@ -1,8 +1,12 @@
 {
   "static": {
     "main_menu": [
-    ["today_tasks"],
-    ["settings", "editor"]
+      ["today_tasks"],
+      ["settings", "editor"]
+    ],
+    "settings_menu": [
+      ["choice_language"],
+      ["back"]
     ],
     "editor_menu": [
       ["add_task", "edit_task"],
