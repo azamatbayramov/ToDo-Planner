@@ -1,9 +1,9 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-from all_json import SETTINGS, CONTENT, KEYBOARDS, MESSAGES
-import keyboards
+from all_json import CONTENT, KEYBOARDS, MESSAGES
 import days_of_the_week
-import tasks
+import keyboards
 import languages
+import tasks
 
 
 # Function for exiting from conversation
@@ -13,7 +13,8 @@ def exit_from_conversation(update):
 
     update.message.reply_text(
         CONTENT["signboard"]["editor_menu"][language["short"]],
-        reply_markup=keyboards.get_menu_keyboard("editor_menu", language["short"])
+        reply_markup=keyboards.get_menu_keyboard("editor_menu",
+                                                 language["short"])
     )
 
     return ConversationHandler.END
@@ -24,7 +25,9 @@ def title_handler(update, context):
     user_id = update.message.from_user.id
     language = languages.get_user_language(user_id)
 
-    pushed_button = keyboards.check_button(update, KEYBOARDS["static"]["cancel"], language["short"])
+    pushed_button = keyboards.check_button(
+        update, KEYBOARDS["static"]["cancel"], language["short"]
+    )
 
     if pushed_button == "cancel":
         return exit_from_conversation(update)
@@ -40,7 +43,8 @@ def title_handler(update, context):
 
     update.message.reply_text(
         MESSAGES["write_task_days_of_the_week"][language["short"]],
-        reply_markup=keyboards.get_menu_keyboard("cancel_back", language["short"])
+        reply_markup=keyboards.get_menu_keyboard("cancel_back",
+                                                 language["short"])
     )
 
     return "days_of_the_week_handler"
@@ -61,19 +65,23 @@ def days_of_the_week_handler(update, context):
     if pushed_button == "back":
         update.message.reply_text(
             MESSAGES["write_task_title"][language["short"]],
-            reply_markup=keyboards.get_menu_keyboard("cancel", language["short"])
+            reply_markup=keyboards.get_menu_keyboard("cancel",
+                                                     language["short"])
         )
 
         return "title_handler"
 
-    days_of_the_week_str = days_of_the_week.get_days_of_the_week_from_string(update.message.text,
-                                                                             language["short"])
+    days_of_the_week_str = days_of_the_week.get_days_of_the_week_from_string(
+        update.message.text, language["short"]
+    )
 
     if not days_of_the_week_str:
         update.message.reply_text(MESSAGES["invalid_input"][language["short"]])
         return "days_of_the_week_handler"
 
-    context.user_data["new_task"]["days_of_the_week"] = "".join(days_of_the_week_str)
+    context.user_data["new_task"]["days_of_the_week"] = "".join(
+        days_of_the_week_str
+    )
 
     tasks.add_task(user_id,
                    context.user_data["new_task"]["title"],
@@ -88,12 +96,19 @@ def days_of_the_week_handler(update, context):
 
 # Conversation schema
 add_task_conversation = ConversationHandler(
-    entry_points=[MessageHandler(Filters.text, title_handler, pass_user_data=True)],
+    entry_points=[
+        MessageHandler(Filters.text, title_handler, pass_user_data=True)
+    ],
 
     states={
-        "title_handler": [MessageHandler(Filters.text, title_handler, pass_user_data=True)],
-        "days_of_the_week_handler": [MessageHandler(Filters.text, days_of_the_week_handler,
-                                                    pass_user_data=True)]
+        "title_handler": [
+            MessageHandler(Filters.text, title_handler, pass_user_data=True)
+        ],
+        "days_of_the_week_handler": [
+            MessageHandler(
+                Filters.text, days_of_the_week_handler, pass_user_data=True
+            )
+        ]
     },
 
     fallbacks=[],

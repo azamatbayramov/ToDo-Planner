@@ -1,10 +1,7 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-
 from all_conversations import edit_delete_task_conversation
 from all_conversations import add_task_conversation
-
 from all_json import CONTENT, KEYBOARDS, MESSAGES
-
 import keyboards
 import tasks
 
@@ -76,6 +73,7 @@ editor_menu_conversation = ConversationHandler(
     },
 
     fallbacks=[],
+
     map_to_parent={
         ConversationHandler.END: "main_menu"
     }
