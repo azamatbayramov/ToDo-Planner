@@ -1,5 +1,6 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-from all_json import CONTENT, KEYBOARDS, MESSAGES
+from all_json import KEYBOARDS, MESSAGES
+from menu import send_editor_menu
 import days_of_the_week
 import keyboards
 import languages
@@ -8,15 +9,7 @@ import tasks
 
 # Function for exiting from conversation
 def exit_from_conversation(update):
-    user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id)
-
-    update.message.reply_text(
-        CONTENT["signboard"]["editor_menu"][language["short"]],
-        reply_markup=keyboards.get_menu_keyboard("editor_menu",
-                                                 language["short"])
-    )
-
+    send_editor_menu(update)
     return ConversationHandler.END
 
 
@@ -95,7 +88,7 @@ def days_of_the_week_handler(update, context):
 
 
 # Conversation schema
-add_task_conversation = ConversationHandler(
+add_task_conversation_handler = ConversationHandler(
     entry_points=[
         MessageHandler(Filters.text, title_handler, pass_user_data=True)
     ],

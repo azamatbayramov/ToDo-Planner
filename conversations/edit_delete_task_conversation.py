@@ -1,5 +1,6 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
 from all_json import CONTENT, KEYBOARDS, MESSAGES
+from menu import send_editor_menu
 from data import db_session
 from data.models import Task
 import keyboards
@@ -17,11 +18,7 @@ def send_menu(update):
 
 # Function for exiting from conversation
 def exit_from_conversation(update):
-    update.message.reply_text(
-        CONTENT["signboard"]["editor_menu"]["ru"],
-        reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru")
-    )
-
+    send_editor_menu(update)
     return ConversationHandler.END
 
 
@@ -206,7 +203,7 @@ def edit_mode_handler(update, context):
 
 
 # Conversation schema
-edit_delete_task_conversation = ConversationHandler(
+edit_delete_task_conversation_handler = ConversationHandler(
     entry_points=[
         MessageHandler(Filters.text, choice_task_handler, pass_user_data=True)
     ],

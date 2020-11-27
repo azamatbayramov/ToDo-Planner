@@ -1,26 +1,15 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-from all_conversations import edit_delete_task_conversation
-from all_conversations import add_task_conversation
-from all_json import CONTENT, KEYBOARDS, MESSAGES
+from conversation_handlers import edit_delete_task_conversation_handler
+from conversation_handlers import add_task_conversation_handler
+from all_json import KEYBOARDS, MESSAGES
+from menu import send_main_menu, send_editor_menu
 import keyboards
 import tasks
 
 
-# Function for send user editor menu's message and keyboard
-def send_menu(update):
-    update.message.reply_text(
-        CONTENT["signboard"]["editor_menu"]["ru"],
-        reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru")
-    )
-
-
 # Function for exiting from conversation
 def exit_from_conversation(update):
-    update.message.reply_text(
-        CONTENT["signboard"]["main_menu"]["ru"],
-        reply_markup=keyboards.get_menu_keyboard("main_menu", "ru")
-    )
-
+    send_main_menu(update)
     return ConversationHandler.END
 
 
@@ -49,7 +38,7 @@ def handler(update, context):
             return "edit_task"
         else:
             update.message.reply_text(MESSAGES["not_tasks"]["ru"])
-            send_menu(update)
+            send_editor_menu(update)
             return "editor_menu"
 
     elif pushed_button == "back":
@@ -57,19 +46,19 @@ def handler(update, context):
 
     else:
         update.message.reply_text(MESSAGES["click_buttons"]["ru"])
-        send_menu(update)
+        send_editor_menu(update)
 
         return "editor_menu"
 
 
 # Conversation schema
-editor_menu_conversation = ConversationHandler(
+editor_menu_conversation_handler = ConversationHandler(
     entry_points=[MessageHandler(Filters.text, handler)],
 
     states={
         "editor_menu": [MessageHandler(Filters.text, handler)],
-        "add_task": [add_task_conversation],
-        "edit_task": [edit_delete_task_conversation],
+        "add_task": [add_task_conversation_handler],
+        "edit_task": [edit_delete_task_conversation_handler],
     },
 
     fallbacks=[],

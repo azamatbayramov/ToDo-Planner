@@ -1,10 +1,12 @@
 from telegram.ext import CommandHandler, MessageHandler, ConversationHandler
 from telegram.ext import Filters
 
-from all_conversations import settings_menu_conversation
-from all_conversations import editor_menu_conversation
+from conversation_handlers import settings_menu_conversation_handler
+from conversation_handlers import editor_menu_conversation_handler
 
-from all_json import CONTENT, KEYBOARDS, MESSAGES
+from menu import send_main_menu, send_editor_menu, send_settings_menu
+
+from all_json import KEYBOARDS, MESSAGES
 
 from data.models import Task
 from data import db_session
@@ -13,19 +15,11 @@ import days_of_the_week
 import keyboards
 
 
-# Function for send user main menu's message and keyboard
-def send_menu(update):
-    update.message.reply_text(
-        CONTENT["signboard"]["main_menu"]["ru"],
-        reply_markup=keyboards.get_menu_keyboard("main_menu", "ru")
-    )
-
-
 # Function for send greeting and send main menu fo user
 # Used for the command /start
 def start_handler(update, context):
     update.message.reply_text(MESSAGES["welcome"]["ru"])
-    send_menu(update)
+    send_main_menu(update)
 
     return 'main_menu'
 
@@ -60,30 +54,22 @@ def handler(update, context):
         return "main_menu"
 
     elif pushed_button == "editor":
-        update.message.reply_text(
-            CONTENT["signboard"]["editor_menu"]["ru"],
-            reply_markup=keyboards.get_menu_keyboard("editor_menu", "ru")
-        )
-
+        send_editor_menu(update)
         return "editor"
 
     elif pushed_button == "settings":
-        update.message.reply_text(
-            CONTENT["signboard"]["settings_menu"]["ru"],
-            reply_markup=keyboards.get_menu_keyboard("settings_menu", "ru")
-        )
-
+        send_settings_menu(update)
         return "settings"
 
     else:
         update.message.reply_text(MESSAGES["click_buttons"]["ru"])
-        send_menu(update)
+        send_main_menu(update)
 
         return "main_menu"
 
 
 # Conversation scheme
-main_menu_conversation = ConversationHandler(
+main_menu_conversation_handler = ConversationHandler(
     entry_points=[
         CommandHandler("start", start_handler),
         MessageHandler(Filters.text, handler)
@@ -91,8 +77,8 @@ main_menu_conversation = ConversationHandler(
 
     states={
         "main_menu": [MessageHandler(Filters.text, handler)],
-        "editor": [editor_menu_conversation],
-        "settings": [settings_menu_conversation]
+        "editor": [editor_menu_conversation_handler],
+        "settings": [settings_menu_conversation_handler]
     },
 
     fallbacks=[]

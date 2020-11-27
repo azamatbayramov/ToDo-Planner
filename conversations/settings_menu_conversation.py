@@ -1,31 +1,15 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-from all_json import CONTENT, KEYBOARDS, MESSAGES, LANGUAGES
+from all_json import KEYBOARDS, MESSAGES, LANGUAGES
 from data import db_session
+from menu import send_main_menu, send_settings_menu
 from data.models import User
 import languages
 import keyboards
 
 
-# Function for sending menu of conversation
-def send_menu(update):
-    user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id)
-    update.message.reply_text(
-        CONTENT["signboard"]["settings_menu"][language["short"]],
-        reply_markup=keyboards.get_menu_keyboard("settings_menu",
-                                                 language["short"])
-    )
-
-    return "menu_handler"
-
-
 # Function for exiting from conversation
 def exit_from_conversation(update):
-    update.message.reply_text(
-        CONTENT["signboard"]["main_menu"]["ru"],
-        reply_markup=keyboards.get_menu_keyboard("main_menu", "ru")
-    )
-
+    send_main_menu(update)
     return ConversationHandler.END
 
 
@@ -60,7 +44,8 @@ def language_handler(update, context):
     )
 
     if pushed_button == "back":
-        return send_menu(update)
+        send_settings_menu(update)
+        return "menu_handler"
 
     for language in LANGUAGES:
         if language["title"].lower() in text.lower():
@@ -78,13 +63,14 @@ def language_handler(update, context):
             MESSAGES["language_changed"][selected_language["short"]]
         )
 
-        return send_menu(update)
+        send_settings_menu(update)
+        return "menu_handler"
     else:
         update.message.reply_text(MESSAGES["click_buttons"][language["short"]])
         return "language_handler"
 
 
-settings_menu_conversation = ConversationHandler(
+settings_menu_conversation_handler = ConversationHandler(
     entry_points=[MessageHandler(Filters.text, menu_handler)],
 
     states={
