@@ -1,62 +1,82 @@
 {
   "welcome": {
-    "ru": "Привет.\nЯ бот ToDo. Я здесь чтобы помочь тебе не забывать о своих ежедневных делах."
+    "ru": "Привет!\nЯ бот ToDo. Я здесь чтобы помочь тебе не забывать о своих ежедневных делах.",
+    "eng": "Hello!\nI'm ToDo bot. I am here to help you don't forget about your tasks."
   },
   "help": {
-    "ru": ""
+    "ru": "",
+    "eng": ""
   },
   "today_tasks": {
-    "ru": "Задачи на сегодня:"
+    "ru": "Задачи на сегодня:",
+    "eng": "Today's tasks:"
   },
   "not_tasks_today": {
-    "ru": "У вас нет задач на сегодня, но вы можете легко это исправить(ну или не исправлять, отдых тоже важен)"
+    "ru": "У вас нет задач на сегодня, но вы можете легко это исправить.",
+    "eng": "You don't have any tasks for today, but you can easily fix it."
   },
   "not_tasks": {
-    "ru": "У вас нет задач"
+    "ru": "У вас нет задач",
+    "eng": "You don't have any tasks"
   },
   "invalid_input": {
-    "ru": "Некорректный ввод. Попробуйте заново"
+    "ru": "Некорректный ввод. Попробуйте заново.",
+    "eng": "Invalid input. Try again."
   },
   "new_task_info": {
-    "ru": "Ваша новая задача:"
+    "ru": "Ваша новая задача:",
+    "eng": "Your new task:"
   },
   "task_added": {
-    "ru": "Задача создана"
+    "ru": "Задача создана",
+    "eng": "The task has been created"
   },
   "task_title_edited": {
-    "ru": "Название задачи изменено"
+    "ru": "Название задачи изменено",
+    "eng": "The task name is changed"
   },
   "task_days_of_the_week_edited": {
-    "ru": "Дни недели задачи изменены"
+    "ru": "Дни недели задачи изменены",
+    "eng": "Task days of the week changed"
   },
   "task_deleted": {
-    "ru": "Задача удалена"
+    "ru": "Задача удалена",
+    "eng": "Task deleted"
   },
   "days_of_the_week": {
-    "ru": "Дни недели:"
+    "ru": "Дни недели:",
+    "eng": "Days of the week:"
   },
   "write_task_title": {
-    "ru": "Введите название задачи"
+    "ru": "Введите название задачи",
+    "eng": "Enter the task name"
   },
   "write_task_days_of_the_week": {
-    "ru": "Введите дни недели для этой задачи через пробел\nДопустимые форматы:\n1)Полные названия дней недели:\nПонедельник вторник среда и тд.\n2)Краткие названия дней недели:\nПн вт ср чт пт сб вс\n3)Номера дней недели(1 - пн, 7 - вс)\n1 2 3 4 5 6 7"
+    "ru": "Введите дни недели для этой задачи через пробел\nДопустимые форматы:\n1)Полные названия дней недели:\nПонедельник вторник среда и тд.\n2)Краткие названия дней недели:\nПн вт ср чт пт сб вс\n3)Номера дней недели(1 - пн, 7 - вс)\n1 2 3 4 5 6 7",
+    "eng": "Enter the days of the week for this task separated by a space\nAcceptable formats:\n1)Full names of days of the week:\nMonday Tuesday Wednesday and so on.\n2)Short names of days of the week:\nMo Tu We Th Fr Sa Su\n3)Numbers of days of the week(1-mon, 7-sun)\n1 2 3 4 5 6 7"
   },
   "click_buttons": {
-    "ru": "Нажимайте по кнопочкам, а то я не понимаю"
+    "ru": "Нажимайте по кнопочкам, а то я не понимаю",
+    "eng": "Click on the buttons, otherwise I don't understand"
   },
   "choice_task": {
-    "ru": "Выберите свою задачу"
+    "ru": "Выберите свою задачу",
+    "eng": "Choose your task"
   },
   "task_exist": {
-    "ru": "Задача существует"
+    "ru": "Задача существует",
+    "eng": "The task exists"
   },
   "choice_action": {
-    "ru": "Выберите действие"
+    "ru": "Выберите действие",
+    "eng": "Choose the action"
   },
   "choice_language": {
-    "ru": "Выберите язык"
+    "ru": "Выберите язык",
+    "eng": "Choose the language"
   },
   "language_changed": {
-    "ru": "Язык изменен"
+    "ru": "Язык изменен",
+    "eng": "The language is changed"
   }
 }

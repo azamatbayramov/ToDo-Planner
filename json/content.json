@@ -1,13 +1,16 @@
 {
   "signboard": {
     "main_menu": {
-      "ru": "Главное меню"
+      "ru": "Главное меню",
+      "eng": "Main menu"
     },
     "editor_menu": {
-      "ru": "Редактор задач"
+      "ru": "Редактор задач",
+      "eng": "Tasks editor"
     },
     "settings_menu": {
-      "ru": "Настройки"
+      "ru": "Настройки",
+      "eng": "Settings"
     }
   }
 }

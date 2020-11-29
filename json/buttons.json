@@ -1,54 +1,67 @@
 {
   "add_task": {
     "emoji": ":heavy_plus_sign:",
-    "ru": "Добавить"
+    "ru": "Добавить",
+    "eng": "Add task"
   },
   "edit_task": {
     "emoji": ":pencil:",
-    "ru": "Редактировать/удалить"
+    "ru": "Редактировать/удалить",
+    "eng": "Edit/delete task"
   },
   "delete_task": {
     "emoji": ":wastebasket:",
-    "ru": "Удалить задачу"
+    "ru": "Удалить задачу",
+    "eng": "Delete task"
   },
   "today_tasks": {
     "emoji": ":page_facing_up:",
-    "ru": "Задачи дня"
+    "ru": "Задачи дня",
+    "eng": "Today's tasks"
   },
   "editor": {
     "emoji": ":memo:",
-    "ru": "Редактор задач"
+    "ru": "Редактор задач",
+    "eng": "Tasks editor"
   },
   "settings": {
     "emoji": ":gear:",
-    "ru": "Настройки"
+    "ru": "Настройки",
+    "eng": "Settings"
   },
   "next": {
     "emoji": ":right_arrow:",
-    "ru": "Дальше"
+    "ru": "Дальше",
+    "eng": "Next"
   },
   "back": {
     "emoji": ":left_arrow:",
-    "ru": "Назад"
+    "ru": "Назад",
+    "eng": "Back"
   },
   "cancel": {
     "emoji": ":cross_mark:",
-    "ru": "Отмена"
+    "ru": "Отмена",
+    "eng": "Cancel"
   },
   "title": {
     "emoji": ":pencil:",
-    "ru": "Название"
+    "ru": "Название",
+    "eng": "Title"
   },
   "days_of_the_week": {
     "emoji": ":calendar:",
-    "ru": "Дни недели"
+    "ru": "Дни недели",
+    "eng": "Days of the week"
   },
   "delete": {
     "emoji": ":wastebasket:",
-    "ru": "Удалить"
+    "ru": "Удалить",
+    "eng": "Delete"
   },
   "choice_language": {
     "emoji": ":triangular_flag:",
-    "ru": "Выбор языка"
+    "ru": "Выбор языка",
+    "eng": "Choice of language"
   }
 }

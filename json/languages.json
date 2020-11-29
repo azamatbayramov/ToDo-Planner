@@ -4,5 +4,11 @@
     "short": "ru",
     "title": "Русский",
     "emoji": ":Russia:"
+  },
+  {
+    "id": 1,
+    "short": "eng",
+    "title": "English",
+    "emoji": ":United_Kingdom:"
   }
 ]

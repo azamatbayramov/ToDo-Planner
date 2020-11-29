@@ -16,10 +16,10 @@ def exit_from_conversation(update):
 # Function - handler for title for a new task
 def title_handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id)
+    language = languages.get_user_language(user_id=user_id, short=True)
 
     pushed_button = keyboards.check_button(
-        update, KEYBOARDS["static"]["cancel"], language["short"]
+        update, KEYBOARDS["static"]["cancel"], language
     )
 
     if pushed_button == "cancel":
@@ -28,16 +28,15 @@ def title_handler(update, context):
     task_titles_list = tasks.get_user_tasks(user_id, only_titles=True)
 
     if update.message.text in task_titles_list:
-        update.message.reply_text(MESSAGES["task_exist"][language["short"]])
+        update.message.reply_text(MESSAGES["task_exist"][language])
         return "title_handler"
 
     context.user_data["new_task"] = {}
     context.user_data["new_task"]["title"] = update.message.text
 
     update.message.reply_text(
-        MESSAGES["write_task_days_of_the_week"][language["short"]],
-        reply_markup=keyboards.get_menu_keyboard("cancel_back",
-                                                 language["short"])
+        MESSAGES["write_task_days_of_the_week"][language],
+        reply_markup=keyboards.get_menu_keyboard("cancel_back", language)
     )
 
     return "days_of_the_week_handler"
@@ -46,30 +45,29 @@ def title_handler(update, context):
 # Function - handler for days of the week for a new task
 def days_of_the_week_handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id)
+    language = languages.get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(update,
-                                           KEYBOARDS["static"]["cancel_back"],
-                                           language["short"])
+    pushed_button = keyboards.check_button(
+        update, KEYBOARDS["static"]["cancel_back"], language
+    )
 
     if pushed_button == "cancel":
         return exit_from_conversation(update)
 
     if pushed_button == "back":
         update.message.reply_text(
-            MESSAGES["write_task_title"][language["short"]],
-            reply_markup=keyboards.get_menu_keyboard("cancel",
-                                                     language["short"])
+            MESSAGES["write_task_title"][language],
+            reply_markup=keyboards.get_menu_keyboard("cancel", language)
         )
 
         return "title_handler"
 
     days_of_the_week_str = days_of_the_week.get_days_of_the_week_from_string(
-        update.message.text, language["short"]
+        update.message.text, language
     )
 
     if not days_of_the_week_str:
-        update.message.reply_text(MESSAGES["invalid_input"][language["short"]])
+        update.message.reply_text(MESSAGES["invalid_input"][language])
         return "days_of_the_week_handler"
 
     context.user_data["new_task"]["days_of_the_week"] = "".join(
@@ -82,12 +80,12 @@ def days_of_the_week_handler(update, context):
 
     context.user_data["new_task"] = {}
 
-    update.message.reply_text(MESSAGES["task_added"][language["short"]])
+    update.message.reply_text(MESSAGES["task_added"][language])
 
     return exit_from_conversation(update)
 
 
-# Conversation schema
+# Conversation scheme
 add_task_conversation_handler = ConversationHandler(
     entry_points=[
         MessageHandler(Filters.text, title_handler, pass_user_data=True)

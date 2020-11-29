@@ -12,13 +12,16 @@ from data.models import Task
 from data import db_session
 
 import days_of_the_week
+import languages
 import keyboards
 
 
 # Function for send greeting and send main menu fo user
 # Used for the command /start
 def start_handler(update, context):
-    update.message.reply_text(MESSAGES["welcome"]["ru"])
+    language = languages.get_user_language(update=update, short=True)
+
+    update.message.reply_text(MESSAGES["welcome"][language])
     send_main_menu(update)
 
     return 'main_menu'
@@ -27,29 +30,32 @@ def start_handler(update, context):
 # Function - handler for main menu buttons. Buttons:
 # today's tasks, editor, settings
 def handler(update, context):
-    pushed_button = keyboards.check_button(update,
-                                           KEYBOARDS["static"]["main_menu"],
-                                           "ru")
+    user_id = update.message.from_user.id
+    language = languages.get_user_language(user_id=user_id, short=True)
+
+    pushed_button = keyboards.check_button(
+        update, KEYBOARDS["static"]["main_menu"], language
+    )
 
     if pushed_button == "today_tasks":
         today_day_of_the_week = days_of_the_week.today_day_of_the_week()
         session = db_session.create_session()
 
         today_tasks = session.query(Task).filter(
-            Task.user_id == update.message.from_user.id,
+            Task.user_id == user_id,
             Task.days_of_the_week.like(f"%{today_day_of_the_week}%")
         ).all()
 
         if today_tasks:
-            text = MESSAGES["today_tasks"]["ru"] + '\n\n'
+            text = MESSAGES["today_tasks"][language] + '\n\n'
             for task in today_tasks:
                 text += task.title + "\n"
         else:
-            text = MESSAGES["not_tasks_today"]["ru"]
-
-        update.message.reply_text(text)
+            text = MESSAGES["not_tasks_today"][language]
 
         session.close()
+
+        update.message.reply_text(text)
 
         return "main_menu"
 
@@ -62,9 +68,8 @@ def handler(update, context):
         return "settings"
 
     else:
-        update.message.reply_text(MESSAGES["click_buttons"]["ru"])
+        update.message.reply_text(MESSAGES["click_buttons"][language])
         send_main_menu(update)
-
         return "main_menu"
 
 

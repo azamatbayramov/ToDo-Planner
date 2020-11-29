@@ -15,10 +15,10 @@ def exit_from_conversation(update):
 
 # Function - handler for settings menu button
 def menu_handler(update, context):
-    user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id)
+    language = languages.get_user_language(update=update, short=True)
+
     pushed_button = keyboards.check_button(
-        update, KEYBOARDS["static"]["settings_menu"], language["short"]
+        update, KEYBOARDS["static"]["settings_menu"], language
     )
 
     if pushed_button == "back":
@@ -26,8 +26,8 @@ def menu_handler(update, context):
 
     elif pushed_button == "choice_language":
         update.message.reply_text(
-            MESSAGES["choice_language"][language["short"]],
-            reply_markup=keyboards.get_languages_menu(language["short"])
+            MESSAGES["choice_language"][language],
+            reply_markup=keyboards.get_languages_menu(language)
         )
 
         return "language_handler"
@@ -36,11 +36,14 @@ def menu_handler(update, context):
 # Function - handler for language for editing a user language
 def language_handler(update, context):
     user_id = update.message.from_user.id
+    user_language = languages.get_user_language(user_id=user_id, short=True)
+
     text = update.message.text
-    language = languages.get_user_language(user_id)
+
     selected_language = {}
+
     pushed_button = keyboards.check_button(
-        update, [["back"]], language["short"]
+        update, [["back"]], user_language
     )
 
     if pushed_button == "back":
@@ -66,10 +69,11 @@ def language_handler(update, context):
         send_settings_menu(update)
         return "menu_handler"
     else:
-        update.message.reply_text(MESSAGES["click_buttons"][language["short"]])
+        update.message.reply_text(MESSAGES["click_buttons"][user_language])
         return "language_handler"
 
 
+# Conversation scheme
 settings_menu_conversation_handler = ConversationHandler(
     entry_points=[MessageHandler(Filters.text, menu_handler)],
 
