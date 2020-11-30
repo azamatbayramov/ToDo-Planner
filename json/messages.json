@@ -1,25 +1,25 @@
 {
   "welcome": {
-    "ru": "Привет!\nЯ бот ToDo. Я здесь чтобы помочь тебе не забывать о своих ежедневных делах.",
-    "eng": "Hello!\nI'm ToDo bot. I am here to help you don't forget about your tasks."
-  },
-  "help": {
-    "ru": "",
-    "eng": ""
+    "ru": "Привет!:wave:\nЯ бот ToDo. Я здесь чтобы помочь тебе не забывать о своих ежедневных делах.",
+    "eng": "Hello!:wave:\nI'm ToDo bot. I am here to help you don't forget about your tasks."
   },
   "today_tasks": {
+    "emoji": ":page_facing_up:",
     "ru": "Задачи на сегодня:",
     "eng": "Today's tasks:"
   },
   "not_tasks_today": {
+    "emoji": ":person_shrugging:",
     "ru": "У вас нет задач на сегодня, но вы можете легко это исправить.",
     "eng": "You don't have any tasks for today, but you can easily fix it."
   },
   "not_tasks": {
+    "emoji": ":person_shrugging:",
     "ru": "У вас нет задач",
     "eng": "You don't have any tasks"
   },
   "invalid_input": {
+    "emoji": ":cross_mark:",
     "ru": "Некорректный ввод. Попробуйте заново.",
     "eng": "Invalid input. Try again."
   },
@@ -28,18 +28,22 @@
     "eng": "Your new task:"
   },
   "task_added": {
+    "emoji": ":heavy_plus_sign:",
     "ru": "Задача создана",
     "eng": "The task has been created"
   },
   "task_title_edited": {
+    "emoji": ":pencil:",
     "ru": "Название задачи изменено",
     "eng": "The task name is changed"
   },
   "task_days_of_the_week_edited": {
+    "emoji": ":calendar:",
     "ru": "Дни недели задачи изменены",
     "eng": "Task days of the week changed"
   },
   "task_deleted": {
+    "emoji": ":wastebasket:",
     "ru": "Задача удалена",
     "eng": "Task deleted"
   },
@@ -48,30 +52,36 @@
     "eng": "Days of the week:"
   },
   "write_task_title": {
+    "emoji": ":pencil:",
     "ru": "Введите название задачи",
     "eng": "Enter the task name"
   },
   "write_task_days_of_the_week": {
-    "ru": "Введите дни недели для этой задачи через пробел\nДопустимые форматы:\n1)Полные названия дней недели:\nПонедельник вторник среда и тд.\n2)Краткие названия дней недели:\nПн вт ср чт пт сб вс\n3)Номера дней недели(1 - пн, 7 - вс)\n1 2 3 4 5 6 7",
-    "eng": "Enter the days of the week for this task separated by a space\nAcceptable formats:\n1)Full names of days of the week:\nMonday Tuesday Wednesday and so on.\n2)Short names of days of the week:\nMo Tu We Th Fr Sa Su\n3)Numbers of days of the week(1-mon, 7-sun)\n1 2 3 4 5 6 7"
+    "ru": "Введите дни недели для этой задачи через пробел\nДопустимые форматы:\n:one:Полные названия дней недели:\nПонедельник вторник среда и тд.\n:two:Краткие названия дней недели:\nПн вт ср чт пт сб вс\n:three:Номера дней недели(1 - пн, 7 - вс):\n1 2 3 4 5 6 7",
+    "eng": "Enter the days of the week for this task separated by a space\nAcceptable formats:\n:one:Full names of days of the week:\nMonday Tuesday Wednesday and so on.\n:two:Short names of days of the week:\nMo Tu We Th Fr Sa Su\n:three:Numbers of days of the week(1-mon, 7-sun):\n1 2 3 4 5 6 7"
   },
   "click_buttons": {
+    "emoji": ":grinning_face_with_sweat:",
     "ru": "Нажимайте по кнопочкам, а то я не понимаю",
     "eng": "Click on the buttons, otherwise I don't understand"
   },
   "choice_task": {
+    "emoji": ":page_facing_up:",
     "ru": "Выберите свою задачу",
     "eng": "Choose your task"
   },
   "task_exist": {
-    "ru": "Задача существует",
+    "emoji": ":person_shrugging:",
+    "ru": "Задача с таким названием уже существует",
     "eng": "The task exists"
   },
   "choice_action": {
+    "emoji": ":crayon:",
     "ru": "Выберите действие",
     "eng": "Choose the action"
   },
   "choice_language": {
+    "emoji": ":triangular_flag:",
     "ru": "Выберите язык",
     "eng": "Choose the language"
   },

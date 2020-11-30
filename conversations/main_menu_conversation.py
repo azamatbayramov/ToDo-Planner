@@ -6,11 +6,12 @@ from conversation_handlers import editor_menu_conversation_handler
 
 from menu import send_main_menu, send_editor_menu, send_settings_menu
 
-from all_json import KEYBOARDS, MESSAGES
+from all_json import KEYBOARDS
 
-from tasks import get_today_tasks
 from languages import get_user_language
 from keyboards import check_button
+from tasks import get_today_tasks
+from messages import get_message
 
 
 # Function for send greeting and send main menu fo user
@@ -18,7 +19,7 @@ from keyboards import check_button
 def start_handler(update, context):
     language = get_user_language(update=update, short=True)
 
-    update.message.reply_text(MESSAGES["welcome"][language])
+    update.message.reply_text(get_message("welcome", language))
     send_main_menu(update)
 
     return 'main_menu'
@@ -38,11 +39,11 @@ def handler(update, context):
         today_tasks = get_today_tasks(user_id)
 
         if today_tasks:
-            text = MESSAGES["today_tasks"][language] + '\n\n'
+            text = get_message("today_tasks", language) + '\n\n'
             for task in today_tasks:
                 text += task.title + "\n"
         else:
-            text = MESSAGES["not_tasks_today"][language]
+            text = get_message("not_tasks_today", language)
 
         update.message.reply_text(text)
 
@@ -57,7 +58,7 @@ def handler(update, context):
         return "settings"
 
     else:
-        update.message.reply_text(MESSAGES["click_buttons"][language])
+        update.message.reply_text(get_message("click_buttons", language))
         send_main_menu(update)
         return "main_menu"
 

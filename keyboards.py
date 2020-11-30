@@ -43,7 +43,7 @@ def get_tasks_keyboard(user_id, language, page=0):
                     continue
                 if button == "next" and (pages_count == 1 or page == last_page):
                     continue
-                keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"])
+                keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"], use_aliases=True)
                                          + BUTTONS[button][language])
 
     return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
@@ -56,7 +56,7 @@ def get_menu_keyboard(keyboard, language):
     for row in keyboard_scheme:
         keyboard_list.append([])
         for button in row:
-            keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"])
+            keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"], use_aliases=True)
                                      + BUTTONS[button][language])
 
     return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
@@ -70,9 +70,9 @@ def get_languages_menu(user_language):
         if len(keyboard_list[-1]) > 3:
             keyboard_list.append([])
 
-        keyboard_list[-1].append(emojize(language["emoji"]) + language["title"])
+        keyboard_list[-1].append(emojize(language["emoji"], use_aliases=True) + language["title"])
 
-    keyboard_list.append([emojize(BUTTONS['back']["emoji"]) + BUTTONS['back'][user_language]])
+    keyboard_list.append([emojize(BUTTONS['back']["emoji"], use_aliases=True) + BUTTONS['back'][user_language]])
 
     return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
 

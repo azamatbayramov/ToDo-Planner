@@ -1,6 +1,6 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
 
-from all_json import KEYBOARDS, MESSAGES, LANGUAGES
+from all_json import KEYBOARDS, LANGUAGES
 
 from data import db_session
 from data.models import User
@@ -8,6 +8,7 @@ from data.models import User
 from keyboards import check_button, get_languages_menu
 from menu import send_main_menu, send_settings_menu
 from languages import get_user_language
+from messages import get_message
 
 
 # Function for exiting from conversation
@@ -29,7 +30,7 @@ def menu_handler(update, context):
 
     elif pushed_button == "choice_language":
         update.message.reply_text(
-            MESSAGES["choice_language"][language],
+            get_message("choice_language", language),
             reply_markup=get_languages_menu(language)
         )
 
@@ -66,13 +67,17 @@ def language_handler(update, context):
         session.close()
 
         update.message.reply_text(
-            MESSAGES["language_changed"][selected_language["short"]]
+            get_message(
+                "language_changed",
+                selected_language["short"],
+                selected_language["emoji"]
+            )
         )
 
         send_settings_menu(update)
         return "menu_handler"
     else:
-        update.message.reply_text(MESSAGES["click_buttons"][user_language])
+        update.message.reply_text(get_message("click_buttons", user_language))
         return "language_handler"
 
 

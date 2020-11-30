@@ -1,12 +1,13 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
 
-from all_json import KEYBOARDS, MESSAGES
+from all_json import KEYBOARDS
 
 from days_of_the_week import get_days_of_the_week_from_string
 from keyboards import get_menu_keyboard, check_button
 from tasks import get_user_tasks, add_task
 from languages import get_user_language
 from menu import send_editor_menu
+from messages import get_message
 
 
 # Function for exiting from conversation
@@ -30,14 +31,14 @@ def title_handler(update, context):
     task_titles_list = get_user_tasks(user_id, only_titles=True)
 
     if update.message.text in task_titles_list:
-        update.message.reply_text(MESSAGES["task_exist"][language])
+        update.message.reply_text(get_message("task_exist", language))
         return "title_handler"
 
     context.user_data["new_task"] = {}
     context.user_data["new_task"]["title"] = update.message.text
 
     update.message.reply_text(
-        MESSAGES["write_task_days_of_the_week"][language],
+        get_message("write_task_days_of_the_week", language),
         reply_markup=get_menu_keyboard("cancel_back", language)
     )
 
@@ -58,7 +59,7 @@ def days_of_the_week_handler(update, context):
 
     if pushed_button == "back":
         update.message.reply_text(
-            MESSAGES["write_task_title"][language],
+            get_message("write_task_title", language),
             reply_markup=get_menu_keyboard("cancel", language)
         )
 
@@ -69,7 +70,7 @@ def days_of_the_week_handler(update, context):
     )
 
     if not days_of_the_week_str:
-        update.message.reply_text(MESSAGES["invalid_input"][language])
+        update.message.reply_text(get_message("invalid_input", language))
         return "days_of_the_week_handler"
 
     context.user_data["new_task"]["days_of_the_week"] = "".join(
@@ -86,7 +87,7 @@ def days_of_the_week_handler(update, context):
 
     context.user_data["new_task"] = {}
 
-    update.message.reply_text(MESSAGES["task_added"][language])
+    update.message.reply_text(get_message("task_added", language))
 
     return exit_from_conversation(update)
 

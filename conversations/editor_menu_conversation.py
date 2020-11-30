@@ -3,11 +3,12 @@ from telegram.ext import MessageHandler, ConversationHandler, Filters
 from conversation_handlers import edit_delete_task_conversation_handler
 from conversation_handlers import add_task_conversation_handler
 
-from all_json import KEYBOARDS, MESSAGES
+from all_json import KEYBOARDS
 
 from menu import send_main_menu, send_editor_menu, send_choice_tasks_menu
 from keyboards import check_button, get_menu_keyboard
 from languages import get_user_language
+from messages import get_message
 from tasks import get_user_tasks
 
 
@@ -28,7 +29,7 @@ def handler(update, context):
 
     if pushed_button == "add_task":
         update.message.reply_text(
-            MESSAGES["write_task_title"][language],
+            get_message("write_task_title", language),
             reply_markup=get_menu_keyboard("cancel", language)
         )
 
@@ -41,7 +42,7 @@ def handler(update, context):
             return "edit_task"
 
         else:
-            update.message.reply_text(MESSAGES["not_tasks"][language])
+            update.message.reply_text(get_message("not_tasks", language))
             send_editor_menu(update)
 
             return "editor_menu"
@@ -50,7 +51,7 @@ def handler(update, context):
         return exit_from_conversation(update)
 
     else:
-        update.message.reply_text(MESSAGES["click_buttons"][language])
+        update.message.reply_text(get_message("click_buttons", language))
         send_editor_menu(update)
 
         return "editor_menu"

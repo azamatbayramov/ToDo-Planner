@@ -1,13 +1,16 @@
 {
   "main_menu": {
+    "emoji": ":mobile_phone:",
     "ru": "Главное меню",
     "eng": "Main menu"
   },
   "editor_menu": {
+    "emoji": ":memo:",
     "ru": "Редактор задач",
     "eng": "Tasks editor"
   },
   "settings_menu": {
+    "emoji": ":gear:",
     "ru": "Настройки",
     "eng": "Settings"
   }
