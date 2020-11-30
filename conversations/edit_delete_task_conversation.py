@@ -1,5 +1,5 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-from all_json import CONTENT, KEYBOARDS, MESSAGES
+from all_json import SIGNBOARDS, KEYBOARDS, MESSAGES
 from menu import send_editor_menu
 from data import db_session
 from data.models import Task
@@ -211,12 +211,7 @@ def edit_mode_handler(update, context):
             return "choice_task_handler"
 
         else:
-            update.message.reply_text(
-                CONTENT["signboard"]["editor_menu"][language],
-                reply_markup=keyboards.get_menu_keyboard(
-                    "editor_menu", language
-                )
-            )
+            send_editor_menu(update)
 
             return ConversationHandler.END
 
