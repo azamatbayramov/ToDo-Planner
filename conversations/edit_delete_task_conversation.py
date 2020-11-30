@@ -1,22 +1,13 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
-from all_json import SIGNBOARDS, KEYBOARDS, MESSAGES
-from menu import send_editor_menu
-from data import db_session
-from data.models import Task
-import days_of_the_week
-import languages
-import keyboards
-import tasks
 
+from all_json import KEYBOARDS, MESSAGES
 
-# Function for sending menu of conversation
-def send_menu(update):
-    language = languages.get_user_language(update=update, short=True)
-
-    update.message.reply_text(
-        MESSAGES["choice_action"][language],
-        reply_markup=keyboards.get_menu_keyboard("edit_task_menu", language)
-    )
+from menu import send_editor_menu, send_edit_mode_menu, send_choice_tasks_menu
+from tasks import get_user_tasks, get_task_id_from_title, edit_task, \
+    delete_task
+from days_of_the_week import get_days_of_the_week_from_string
+from keyboards import get_menu_keyboard, check_button
+from languages import get_user_language
 
 
 # Function for exiting from conversation
@@ -28,23 +19,24 @@ def exit_from_conversation(update):
 # Function - handler for task for editing/deleting
 def choice_task_handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id=user_id, short=True)
+    language = get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["cancel_back_next"], language
     )
 
-    task_titles_list = tasks.get_user_tasks(user_id, only_titles=True)
+    task_titles_list = get_user_tasks(user_id, only_titles=True)
 
     if update.message.text in task_titles_list:
         context.user_data["selected_task_id"] = \
-            tasks.get_task_id_from_title(update.message.text)
+            get_task_id_from_title(update.message.text)
 
-        send_menu(update)
+        send_edit_mode_menu(update)
 
         return "edit_mode_handler"
 
     if pushed_button == "cancel":
+        context.user_data["page"] = 0
         return exit_from_conversation(update)
 
     elif pushed_button == "next":
@@ -53,79 +45,80 @@ def choice_task_handler(update, context):
         else:
             context.user_data["page"] = 1
 
-        keyboard = keyboards.get_tasks_keyboard(
-            user_id, language, page=context.user_data["page"]
+        sending_result = send_choice_tasks_menu(
+            update, context.user_data["page"]
         )
 
-        if keyboard:
-            update.message.reply_text(MESSAGES["choice_task"][language],
-                                      reply_markup=keyboard)
-
-            return "choice_task_handler"
-        else:
+        if not sending_result:
             update.message.reply_text(MESSAGES["click_buttons"][language])
             context.user_data["page"] -= 1
+            send_choice_tasks_menu(update, context.user_data["page"])
+
             return "choice_task_handler"
 
     elif pushed_button == "back":
         if "page" in context.user_data:
             if context.user_data["page"] > 0:
                 context.user_data["page"] -= 1
-                update.message.reply_text(
-                    MESSAGES["choice_task"][language],
-                    reply_markup=keyboards.get_tasks_keyboard(
-                        user_id, language, page=context.user_data["page"]
-                    )
-                )
+                send_choice_tasks_menu(update, context.user_data["page"])
 
                 return "choice_task_handler"
 
         update.message.reply_text(MESSAGES["click_buttons"][language])
+        send_choice_tasks_menu(update)
         return "choice_task_handler"
 
 
 # Function - handler for title for editing a task
 def new_title_handler(update, context):
-    language = languages.get_user_language(update=update, short=True)
+    user_id = update.message.from_user.id
+    language = get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["cancel"], language
     )
 
     if pushed_button == "cancel":
-        send_menu(update)
+        send_edit_mode_menu(update)
 
         return "edit_mode_handler"
 
-    session = db_session.create_session()
-    task = session.query(Task).filter(
-        Task.id == context.user_data["selected_task_id"]
-    ).first()
+    new_title = update.message.text
 
-    task.title = update.message.text
-    session.commit()
-    session.close()
+    task_titles_list = get_user_tasks(user_id, only_titles=True)
 
-    update.message.reply_text(MESSAGES["task_title_edited"][language])
-    send_menu(update)
+    if new_title in task_titles_list:
+        update.message.reply_text(MESSAGES["task_exist"][language])
+        return "new_title_handler"
 
-    return "edit_mode_handler"
+    edit_result = edit_task(
+        context.user_data["selected_task_id"],
+        title=new_title
+    )
+
+    if edit_result:
+        update.message.reply_text(MESSAGES["task_title_edited"][language])
+        send_edit_mode_menu(update)
+        return "edit_mode_handler"
+    else:
+        update.message.reply_text(MESSAGES["invalid_input"][language])
+        return "new_title_handler"
 
 
 # Function - handler for days of the week for editing a task
 def new_days_of_the_week_handler(update, context):
-    language = languages.get_user_language(update=update, short=True)
+    language = get_user_language(update=update, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["cancel"], language
     )
 
     if pushed_button == "cancel":
-        send_menu(update)
+        send_edit_mode_menu(update)
 
         return "edit_mode_handler"
 
-    days_of_the_week_str = days_of_the_week.get_days_of_the_week_from_string(
+    days_of_the_week_str = get_days_of_the_week_from_string(
         update.message.text, language
     )
 
@@ -133,31 +126,29 @@ def new_days_of_the_week_handler(update, context):
         update.message.reply_text(MESSAGES["invalid_input"][language])
         return "new_days_of_the_week_handler"
 
-    session = db_session.create_session()
-    task = session.query(Task).filter(
-        Task.id == context.user_data["selected_task_id"]
-    ).first()
-
-    task.days_of_the_week = days_of_the_week_str
-    session.commit()
-    session.close()
-
-    update.message.reply_text(
-        MESSAGES["task_days_of_the_week_edited"][language]
+    edit_result = edit_task(
+        context.user_data["selected_task_id"],
+        days_of_the_week=days_of_the_week_str
     )
 
-    send_menu(update)
-
-    return "edit_mode_handler"
+    if edit_result:
+        update.message.reply_text(
+            MESSAGES["task_days_of_the_week_edited"][language]
+        )
+        send_edit_mode_menu(update)
+        return "edit_mode_handler"
+    else:
+        update.message.reply_text(MESSAGES["invalid_input"][language])
+        return "new_days_of_the_week_handler"
 
 
 # Function - handler for mode of editing/deleting: edit title,
 # edit days of the week, delete task
 def edit_mode_handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id=user_id, short=True)
+    language = get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["edit_task_menu"], language
     )
 
@@ -165,19 +156,14 @@ def edit_mode_handler(update, context):
         if "page" not in context.user_data:
             context.user_data["page"] = 0
 
-        update.message.reply_text(
-            MESSAGES["choice_task"][language],
-            reply_markup=keyboards.get_tasks_keyboard(
-                user_id, language, page=context.user_data["page"]
-            )
-        )
+        send_choice_tasks_menu(update, context.user_data["page"])
 
         return "choice_task_handler"
 
     elif pushed_button == "title":
         update.message.reply_text(
             MESSAGES["write_task_title"][language],
-            reply_markup=keyboards.get_menu_keyboard("cancel", language)
+            reply_markup=get_menu_keyboard("cancel", language)
         )
 
         return "new_title_handler"
@@ -185,28 +171,19 @@ def edit_mode_handler(update, context):
     elif pushed_button == "days_of_the_week":
         update.message.reply_text(
             MESSAGES["write_task_days_of_the_week"][language],
-            reply_markup=keyboards.get_menu_keyboard("cancel", language)
+            reply_markup=get_menu_keyboard("cancel", language)
         )
 
         return "new_days_of_the_week_handler"
 
     elif pushed_button == "delete":
-        session = db_session.create_session()
-        task = session.query(Task).filter(
-            Task.id == context.user_data["selected_task_id"]
-        ).first()
-
-        session.delete(task)
-        session.commit()
-        session.close()
+        delete_task(context.user_data["selected_task_id"])
 
         update.message.reply_text(MESSAGES["task_deleted"][language])
 
-        if tasks.get_user_tasks(user_id):
-            update.message.reply_text(
-                MESSAGES["choice_task"][language],
-                reply_markup=keyboards.get_tasks_keyboard(user_id, language)
-            )
+        if get_user_tasks(user_id):
+            send_choice_tasks_menu(update)
+            context.user_data["page"] = 0
 
             return "choice_task_handler"
 
@@ -217,6 +194,7 @@ def edit_mode_handler(update, context):
 
     else:
         update.message.reply_text(MESSAGES["click_buttons"][language])
+
         return "edit_mode_handler"
 
 

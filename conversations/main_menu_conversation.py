@@ -8,18 +8,15 @@ from menu import send_main_menu, send_editor_menu, send_settings_menu
 
 from all_json import KEYBOARDS, MESSAGES
 
-from data.models import Task
-from data import db_session
-
-import days_of_the_week
-import languages
-import keyboards
+from tasks import get_today_tasks
+from languages import get_user_language
+from keyboards import check_button
 
 
 # Function for send greeting and send main menu fo user
 # Used for the command /start
 def start_handler(update, context):
-    language = languages.get_user_language(update=update, short=True)
+    language = get_user_language(update=update, short=True)
 
     update.message.reply_text(MESSAGES["welcome"][language])
     send_main_menu(update)
@@ -31,20 +28,14 @@ def start_handler(update, context):
 # today's tasks, editor, settings
 def handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id=user_id, short=True)
+    language = get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["main_menu"], language
     )
 
     if pushed_button == "today_tasks":
-        today_day_of_the_week = days_of_the_week.today_day_of_the_week()
-        session = db_session.create_session()
-
-        today_tasks = session.query(Task).filter(
-            Task.user_id == user_id,
-            Task.days_of_the_week.like(f"%{today_day_of_the_week}%")
-        ).all()
+        today_tasks = get_today_tasks(user_id)
 
         if today_tasks:
             text = MESSAGES["today_tasks"][language] + '\n\n'
@@ -52,8 +43,6 @@ def handler(update, context):
                 text += task.title + "\n"
         else:
             text = MESSAGES["not_tasks_today"][language]
-
-        session.close()
 
         update.message.reply_text(text)
 

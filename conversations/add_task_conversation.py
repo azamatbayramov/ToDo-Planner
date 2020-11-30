@@ -1,10 +1,12 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
+
 from all_json import KEYBOARDS, MESSAGES
+
+from days_of_the_week import get_days_of_the_week_from_string
+from keyboards import get_menu_keyboard, check_button
+from tasks import get_user_tasks, add_task
+from languages import get_user_language
 from menu import send_editor_menu
-import days_of_the_week
-import keyboards
-import languages
-import tasks
 
 
 # Function for exiting from conversation
@@ -16,16 +18,16 @@ def exit_from_conversation(update):
 # Function - handler for title for a new task
 def title_handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id=user_id, short=True)
+    language = get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["cancel"], language
     )
 
     if pushed_button == "cancel":
         return exit_from_conversation(update)
 
-    task_titles_list = tasks.get_user_tasks(user_id, only_titles=True)
+    task_titles_list = get_user_tasks(user_id, only_titles=True)
 
     if update.message.text in task_titles_list:
         update.message.reply_text(MESSAGES["task_exist"][language])
@@ -36,7 +38,7 @@ def title_handler(update, context):
 
     update.message.reply_text(
         MESSAGES["write_task_days_of_the_week"][language],
-        reply_markup=keyboards.get_menu_keyboard("cancel_back", language)
+        reply_markup=get_menu_keyboard("cancel_back", language)
     )
 
     return "days_of_the_week_handler"
@@ -45,9 +47,9 @@ def title_handler(update, context):
 # Function - handler for days of the week for a new task
 def days_of_the_week_handler(update, context):
     user_id = update.message.from_user.id
-    language = languages.get_user_language(user_id=user_id, short=True)
+    language = get_user_language(user_id=user_id, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["cancel_back"], language
     )
 
@@ -57,12 +59,12 @@ def days_of_the_week_handler(update, context):
     if pushed_button == "back":
         update.message.reply_text(
             MESSAGES["write_task_title"][language],
-            reply_markup=keyboards.get_menu_keyboard("cancel", language)
+            reply_markup=get_menu_keyboard("cancel", language)
         )
 
         return "title_handler"
 
-    days_of_the_week_str = days_of_the_week.get_days_of_the_week_from_string(
+    days_of_the_week_str = get_days_of_the_week_from_string(
         update.message.text, language
     )
 
@@ -74,9 +76,13 @@ def days_of_the_week_handler(update, context):
         days_of_the_week_str
     )
 
-    tasks.add_task(user_id,
-                   context.user_data["new_task"]["title"],
-                   context.user_data["new_task"]["days_of_the_week"])
+    new_task_data = context.user_data["new_task"]
+
+    add_task(
+        user_id,
+        new_task_data["title"],
+        new_task_data["days_of_the_week"]
+    )
 
     context.user_data["new_task"] = {}
 

@@ -1,10 +1,13 @@
 from telegram.ext import MessageHandler, ConversationHandler, Filters
+
 from all_json import KEYBOARDS, MESSAGES, LANGUAGES
+
 from data import db_session
-from menu import send_main_menu, send_settings_menu
 from data.models import User
-import languages
-import keyboards
+
+from keyboards import check_button, get_languages_menu
+from menu import send_main_menu, send_settings_menu
+from languages import get_user_language
 
 
 # Function for exiting from conversation
@@ -15,9 +18,9 @@ def exit_from_conversation(update):
 
 # Function - handler for settings menu button
 def menu_handler(update, context):
-    language = languages.get_user_language(update=update, short=True)
+    language = get_user_language(update=update, short=True)
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, KEYBOARDS["static"]["settings_menu"], language
     )
 
@@ -27,7 +30,7 @@ def menu_handler(update, context):
     elif pushed_button == "choice_language":
         update.message.reply_text(
             MESSAGES["choice_language"][language],
-            reply_markup=keyboards.get_languages_menu(language)
+            reply_markup=get_languages_menu(language)
         )
 
         return "language_handler"
@@ -36,13 +39,13 @@ def menu_handler(update, context):
 # Function - handler for language for editing a user language
 def language_handler(update, context):
     user_id = update.message.from_user.id
-    user_language = languages.get_user_language(user_id=user_id, short=True)
+    user_language = get_user_language(user_id=user_id, short=True)
 
     text = update.message.text
 
     selected_language = {}
 
-    pushed_button = keyboards.check_button(
+    pushed_button = check_button(
         update, [["back"]], user_language
     )
 

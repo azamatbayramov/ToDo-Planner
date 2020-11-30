@@ -1,6 +1,7 @@
 import datetime
 from all_json import DAYS_OF_THE_WEEK
 
+
 # This is a module for working with days of the week
 
 
@@ -51,5 +52,5 @@ def get_days_of_the_week_from_string(input_string, language):
 
 
 # Function to getting today's day of the week
-def today_day_of_the_week():
+def get_today_day_of_the_week():
     return datetime.datetime.today().weekday() + 1
