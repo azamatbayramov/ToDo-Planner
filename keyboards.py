@@ -1,18 +1,24 @@
 from telegram import ReplyKeyboardMarkup
+
+from all_json import SETTINGS, KEYBOARDS, BUTTONS, LANGUAGES
+
 from emoji import emojize
 import math
-from all_json import SETTINGS, KEYBOARDS, BUTTONS
-import tasks
-from all_json import LANGUAGES
+
+from tasks import get_user_tasks
 
 
 def get_tasks_keyboard(user_id, language, page=0):
-    tasks_titles_list = tasks.get_user_tasks(user_id, only_titles=True)
+    tasks_titles_list = get_user_tasks(user_id, only_titles=True)
+
     tasks_count = len(tasks_titles_list)
     pages_count = math.ceil(tasks_count / SETTINGS["keyboard_tasks_count"])
+
     last_page = pages_count - 1
+
     if page >= pages_count:
         return False
+
     if tasks_count > SETTINGS["keyboard_tasks_count"]:
         start_index = SETTINGS["keyboard_tasks_count"] * page
         finish_index = SETTINGS["keyboard_tasks_count"] * (page + 1)
@@ -22,7 +28,10 @@ def get_tasks_keyboard(user_id, language, page=0):
         else:
             tasks_titles_list = tasks_titles_list[start_index:finish_index]
 
-    keyboard_scheme = KEYBOARDS["dynamic"]["tasks_keyboard"][f"count_{len(tasks_titles_list)}"]
+    keyboard_scheme = KEYBOARDS["dynamic"]["tasks_keyboard"][
+        f"count_{len(tasks_titles_list)}"
+    ]
+
     keyboard_list = []
 
     task_index = 0
@@ -35,18 +44,25 @@ def get_tasks_keyboard(user_id, language, page=0):
 
     for row in keyboard_scheme:
         keyboard_list.append([])
+
         for button in row:
             if button == "{task}":
                 keyboard_list[-1].append(get_next_task_title())
             else:
                 if button == "back" and (pages_count == 1 or page == 0):
                     continue
-                if button == "next" and (pages_count == 1 or page == last_page):
+                if button == "next" and (pages_count == 1 or
+                                         page == last_page):
                     continue
-                keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"], use_aliases=True)
-                                         + BUTTONS[button][language])
 
-    return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
+                keyboard_list[-1].append(
+                    emojize(BUTTONS[button]["emoji"], use_aliases=True)
+                    + BUTTONS[button][language]
+                )
+
+    return ReplyKeyboardMarkup(
+        keyboard_list, one_time_keyboard=False, resize_keyboard=True
+    )
 
 
 def get_menu_keyboard(keyboard, language):
@@ -55,11 +71,16 @@ def get_menu_keyboard(keyboard, language):
 
     for row in keyboard_scheme:
         keyboard_list.append([])
-        for button in row:
-            keyboard_list[-1].append(emojize(BUTTONS[button]["emoji"], use_aliases=True)
-                                     + BUTTONS[button][language])
 
-    return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
+        for button in row:
+            keyboard_list[-1].append(
+                emojize(BUTTONS[button]["emoji"], use_aliases=True)
+                + BUTTONS[button][language]
+            )
+
+    return ReplyKeyboardMarkup(
+        keyboard_list, one_time_keyboard=False, resize_keyboard=True
+    )
 
 
 def get_languages_menu(user_language):
@@ -70,11 +91,18 @@ def get_languages_menu(user_language):
         if len(keyboard_list[-1]) > 3:
             keyboard_list.append([])
 
-        keyboard_list[-1].append(emojize(language["emoji"], use_aliases=True) + language["title"])
+        keyboard_list[-1].append(
+            emojize(language["emoji"], use_aliases=True) + language["title"]
+        )
 
-    keyboard_list.append([emojize(BUTTONS['back']["emoji"], use_aliases=True) + BUTTONS['back'][user_language]])
+    keyboard_list.append(
+        [emojize(BUTTONS['back']["emoji"], use_aliases=True) +
+         BUTTONS['back'][user_language]]
+    )
 
-    return ReplyKeyboardMarkup(keyboard_list, one_time_keyboard=False, resize_keyboard=True)
+    return ReplyKeyboardMarkup(
+        keyboard_list, one_time_keyboard=False, resize_keyboard=True
+    )
 
 
 def check_button(update, keyboard_list, language):
