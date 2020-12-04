@@ -1,17 +1,39 @@
+"""Module for working with days of the week"""
+
 import datetime
 from all_json import DAYS_OF_THE_WEEK
 
 
-# This is a module for working with days of the week
-
-
 def get_days_of_the_week_from_string(input_string, language):
-    """Function for getting days of the week from a string"""
+    """Get days of the week from string
+
+    Keyword arguments:
+    input_string -- string to process
+    language -- language for string processing
+
+    If input string is correct:
+    Return sorted string with numbers of days
+    of the week(Monday - 1, Sunday - 7)
+    Else:
+    Return False
+
+    Example:
+    get_days_of_the_week_from_string("Tuesday Friday", "eng") - "25"
+    get_days_of_the_week_from_string("Fr Su We", "eng") - "573"
+    get_days_of_the_week_from_string("1 7 3", "eng") - "137"
+
+
+    get_days_of_the_week_from_string("Tuesday Fr 1", "eng") - False
+    get_days_of_the_week_from_string("Fr Fr Fr", "eng") - False
+    get_days_of_the_week_from_string("Hello", "eng") - False
+
+    """
 
     input_string = input_string.lower()
-    output_list = []
-
     days_of_the_week = input_string.split()
+
+    # List for numbers of days of the week
+    output_list = []
 
     # Check if days of the week more than in the week
     if len(days_of_the_week) > 7:
@@ -51,6 +73,6 @@ def get_days_of_the_week_from_string(input_string, language):
     return output_string
 
 
-# Function to getting today's day of the week
 def get_today_day_of_the_week():
+    """Return today's day of the week(Monday - 1, Sunday - 7)"""
     return datetime.datetime.today().weekday() + 1
