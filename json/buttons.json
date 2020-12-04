@@ -1,6 +1,6 @@
 {
   "add_task": {
-    "emoji": ":heavy_plus_sign:",
+    "emoji": ":diamond_shape_with_a_dot_inside:",
     "ru": "Добавить",
     "eng": "Add task"
   },
@@ -45,7 +45,7 @@
     "eng": "Cancel"
   },
   "title": {
-    "emoji": ":pencil:",
+    "emoji": ":pencil2:",
     "ru": "Название",
     "eng": "Title"
   },

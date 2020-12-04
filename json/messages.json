@@ -23,12 +23,8 @@
     "ru": "Некорректный ввод. Попробуйте заново.",
     "eng": "Invalid input. Try again."
   },
-  "new_task_info": {
-    "ru": "Ваша новая задача:",
-    "eng": "Your new task:"
-  },
   "task_added": {
-    "emoji": ":heavy_plus_sign:",
+    "emoji": ":diamond_shape_with_a_dot_inside:",
     "ru": "Задача создана",
     "eng": "The task has been created"
   },
@@ -47,18 +43,14 @@
     "ru": "Задача удалена",
     "eng": "Task deleted"
   },
-  "days_of_the_week": {
-    "ru": "Дни недели:",
-    "eng": "Days of the week:"
-  },
   "write_task_title": {
-    "emoji": ":pencil:",
+    "emoji": ":pencil2:",
     "ru": "Введите название задачи",
     "eng": "Enter the task name"
   },
   "write_task_days_of_the_week": {
-    "ru": "Введите дни недели для этой задачи через пробел\nДопустимые форматы:\n:one:Полные названия дней недели:\nПонедельник вторник среда и тд.\n:two:Краткие названия дней недели:\nПн вт ср чт пт сб вс\n:three:Номера дней недели(1 - пн, 7 - вс):\n1 2 3 4 5 6 7",
-    "eng": "Enter the days of the week for this task separated by a space\nAcceptable formats:\n:one:Full names of days of the week:\nMonday Tuesday Wednesday and so on.\n:two:Short names of days of the week:\nMo Tu We Th Fr Sa Su\n:three:Numbers of days of the week(1-mon, 7-sun):\n1 2 3 4 5 6 7"
+    "ru": "Введите дни недели для этой задачи через пробел\n\nДопустимые форматы:\n:one:Полные названия дней недели:\nПонедельник вторник среда и тд.\n:two:Краткие названия дней недели:\nПн вт ср чт пт сб вс\n:three:Номера дней недели(1 - пн, 7 - вс):\n1 2 3 4 5 6 7",
+    "eng": "Enter the days of the week for this task separated by a space\n\nAcceptable formats:\n:one:Full names of days of the week:\nMonday Tuesday Wednesday and so on.\n:two:Short names of days of the week:\nMo Tu We Th Fr Sa Su\n:three:Numbers of days of the week(1-mon, 7-sun):\n1 2 3 4 5 6 7"
   },
   "click_buttons": {
     "emoji": ":grinning_face_with_sweat:",
