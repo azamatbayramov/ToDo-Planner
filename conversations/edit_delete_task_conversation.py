@@ -3,7 +3,7 @@ from telegram.ext import MessageHandler, ConversationHandler, Filters
 from all_json import KEYBOARDS
 
 from menu import send_editor_menu, send_edit_mode_menu, send_choice_tasks_menu
-from tasks import get_user_tasks, get_task_id_from_title, edit_task, \
+from tasks import get_user_tasks, get_task_from_title, edit_task, \
     delete_task
 from days_of_the_week import get_days_of_the_week_from_string
 from keyboards import get_menu_keyboard, check_button
@@ -30,7 +30,7 @@ def choice_task_handler(update, context):
 
     if update.message.text in task_titles_list:
         context.user_data["selected_task_id"] = \
-            get_task_id_from_title(update.message.text)
+            get_task_from_title(update.message.text, user_id, only_id=True)
 
         send_edit_mode_menu(update)
 

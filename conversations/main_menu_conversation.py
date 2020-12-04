@@ -10,7 +10,7 @@ from all_json import KEYBOARDS
 
 from languages import get_user_language
 from keyboards import check_button
-from tasks import get_today_tasks
+from tasks import get_user_tasks
 from messages import get_message
 
 
@@ -36,12 +36,12 @@ def handler(update, context):
     )
 
     if pushed_button == "today_tasks":
-        today_tasks = get_today_tasks(user_id)
+        today_tasks = get_user_tasks(user_id, only_titles=True, today_tasks=True)
 
         if today_tasks:
             text = get_message("today_tasks", language) + '\n\n'
             for task in today_tasks:
-                text += task.title + "\n"
+                text += task + "\n"
         else:
             text = get_message("not_tasks_today", language)
 

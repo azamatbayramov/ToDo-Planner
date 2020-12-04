@@ -22,11 +22,9 @@ def get_days_of_the_week_from_string(input_string, language):
     get_days_of_the_week_from_string("Fr Su We", "eng") - "573"
     get_days_of_the_week_from_string("1 7 3", "eng") - "137"
 
-
     get_days_of_the_week_from_string("Tuesday Fr 1", "eng") - False
     get_days_of_the_week_from_string("Fr Fr Fr", "eng") - False
     get_days_of_the_week_from_string("Hello", "eng") - False
-
     """
 
     input_string = input_string.lower()
