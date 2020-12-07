@@ -33,7 +33,7 @@ def title_handler(update, context):
     if pushed_button == "cancel":
         return exit_from_conversation(update)
 
-    # Check if user have task with such title
+    # Check if user has task with such title
     if update.message.text in get_user_tasks(user_id, only_titles=True):
         update.message.reply_text(get_message("task_exist", language))
         return "title_handler"
