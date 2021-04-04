@@ -1,3 +1,5 @@
+"""Module for conversation handlers importing"""
+
 from conversations.add_task_conversation import add_task_conversation_handler
 
 from conversations.edit_delete_task_conversation import \
