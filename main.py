@@ -1,3 +1,5 @@
+"""Main module for starting work of bot"""
+
 from telegram.ext import Updater
 from data import db_session
 from all_json import SETTINGS
