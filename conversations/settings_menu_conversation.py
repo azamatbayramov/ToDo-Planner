@@ -1,3 +1,5 @@
+"""Module for settings menu"""
+
 from telegram.ext import MessageHandler, ConversationHandler, Filters
 
 from all_json import KEYBOARDS, LANGUAGES
