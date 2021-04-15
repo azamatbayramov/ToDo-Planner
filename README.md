@@ -5,8 +5,8 @@
 ## In the bot, you can:
 + [📄 Watch today's tasks](#-watch-todays-tasks)
 + [💠 Add new task](#-add-new-task)
-+ [📝 Edit tasks](#-edit-tasks-title)
-    + [✏️ Edit task's title](#-edit-tasks-title)
++ [📝 Edit tasks](#%EF%B8%8F-edit-tasks-title)
+    + [✏️ Edit task's title](#%EF%B8%8F-edit-tasks-title)
     + [📆 Edit task's days of the week](#-edit-tasks-days-of-the-week)
     + [🗑 Delete task](#-delete-task)
 + [🚩 Select a language](#-select-a-language)
