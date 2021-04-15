@@ -1,6 +1,12 @@
 # ToDo-Planner
 📝📅 Telegram planner bot
 
+## About
+This is a bot, where you can save your weekly tasks and watch today's tasks. Everything is very simple and convenient.
+
+#### Supported languages
++ English
++ Russian
 
 ## In the bot, you can:
 + [📄 Watch today's tasks](#-watch-todays-tasks)
