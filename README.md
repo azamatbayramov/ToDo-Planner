@@ -14,30 +14,32 @@
 
 ## GIF
 
-### Watch today's tasks
+### 📄 Watch today's tasks
 ![gif](http://g.recordit.co/kUkHj4PElm.gif)
 
-#### [Go up](#in-the-bot-you-can)
+#### [🔼 Go up](#in-the-bot-you-can)
 
-### Add new task
+### 💠 Add new task
 ![gif](http://g.recordit.co/C0waXItDAX.gif)
 
-#### [Go up](#in-the-bot-you-can)
+#### [🔼 Go up](#in-the-bot-you-can)
 
-### Edit task's title
+### ✏️ Edit task's title
 ![gif](http://g.recordit.co/I9NUwRkuWy.gif)
 
-#### [Go up](#in-the-bot-you-can)
+#### [🔼 Go up](#in-the-bot-you-can)
 
-### Edit task's days of the week
+### 📆 Edit task's days of the week
 ![gif](http://g.recordit.co/CL1KbV1tcE.gif)
 
-#### [Go up](#in-the-bot-you-can)
+#### [🔼 Go up](#in-the-bot-you-can)
 
-### Delete task
+### 🗑 Delete task
 ![gif](http://g.recordit.co/iBvfYvpF3B.gif)
 
-### Select a language
+#### [🔼 Go up](#in-the-bot-you-can)
+
+### 🚩 Select a language
 ![gif](http://g.recordit.co/0eRBsB74wA.gif)
 
-#### [Go up](#in-the-bot-you-can)
+#### [🔼 Go up](#in-the-bot-you-can)
