@@ -8,6 +8,13 @@ This is a bot, where you can save your weekly tasks and watch today's tasks. Eve
 + English
 + Russian
 
+#### Used stack
++ Python 3
++ SQLite
++ SQLAlchemy
++ "telegram" library
++ "emoji" library
+
 ## In the bot, you can:
 + [📄 Watch today's tasks](#-watch-todays-tasks)
 + [💠 Add new task](#-add-new-task)
