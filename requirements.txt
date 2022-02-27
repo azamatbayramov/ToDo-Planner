@@ -1,3 +1,4 @@
 SQLAlchemy
 telegram
 emoji
+python-telegram-bot
